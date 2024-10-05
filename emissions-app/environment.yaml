@@ -1,6 +1,8 @@
-name: emissions_app
+name: emissions-app
 channels:
   - defaults
 dependencies:
   - python >=3.12
   - pip
+variables:
+  PORT: 8080

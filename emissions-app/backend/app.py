@@ -17,7 +17,9 @@ def serve_react_app(path):
 
 @app.route('/api/data')
 def hello():
-    return jsonify({"message": "Hello from the Flask a d 2!"})
+    return jsonify({"message": "Hi Sarah! It's not much but it's an app!"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    # port is set in GCP; otherwise use 8080
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
