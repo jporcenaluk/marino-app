@@ -1,0 +1,6 @@
+name: emissions_app
+channels:
+  - defaults
+dependencies:
+  - python >=3.12
+  - pip
