@@ -28,7 +28,6 @@ gcloud run deploy $APP_NAME \
   --image $DOCKER_IMAGE_PATH \
   --region $REGION \
   --platform managed \
-  --allow-unauthenticated
+  --allow-unauthenticated \
   --memory "512Mi" \
-  --cpu "1" \
-  --concurrency "5"
+  --cpu "1"
