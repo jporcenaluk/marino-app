@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY emissions_app/backend/ .
 
 # Copy React build from frontend-build stage to Flask's static folder
-COPY --from=frontend-build /app/frontend/build /app/backend/static
+COPY --from=frontend-build /app/frontend/build /app/static
 
 # Expose Flask port (5000)
 EXPOSE 5000

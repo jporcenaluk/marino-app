@@ -11,3 +11,6 @@ This was developed with the assistance of AI via the ChatGPT application models 
 ```sh
 source quickstart.sh
 ```
+
+## Deploy to Prod (From Local)
+
