@@ -14,9 +14,6 @@ fi
 echo "Activating Conda environment '$ENV_NAME'..."
 conda activate $ENV_NAME
 
-# Change directory to environment
-cd $ENV_NAME
-
 # Start the Docker containers
 echo "Starting Docker containers..."
 docker-compose up

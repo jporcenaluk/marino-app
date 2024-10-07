@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import TransportationForm from './components/TransportationForm';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -14,6 +15,7 @@ function App() {
   return (
     <div>
       <h1>{message ? message : 'Loading...'}</h1>
+      <TransportationForm />
     </div>
   );
 }
