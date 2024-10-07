@@ -17,7 +17,7 @@ def serve_react_app(path):
 
 @app.route('/api/data')
 def hello():
-    return jsonify({"message": "Hi Sarah! It's not much but it's an app!"})
+    return jsonify({"message": "Marino Maths Week"})
 
 if __name__ == "__main__":
     # port is set in GCP; otherwise use 8080
