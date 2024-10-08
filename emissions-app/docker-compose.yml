@@ -5,13 +5,14 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./backend:/app
+      - /home/jporcenaluk/keys/marino-emissions-app-ddd3dd1803cb.json:/keys/marino-emissions-app.json
     ports:
       - '8080:8080'
     environment:
       - FLASK_ENV=development
       - FLASK_APP=app.py
       - STATIC_FOLDER=../frontend/build
-
+      - GOOGLE_APPLICATION_CREDENTIALS=/keys/marino-emissions-app.json
   frontend:
     build:
       context: ./frontend

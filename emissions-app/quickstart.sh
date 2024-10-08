@@ -14,6 +14,8 @@ fi
 echo "Activating Conda environment '$ENV_NAME'..."
 conda activate $ENV_NAME
 
+pip install -r backend/requirements-dev.txt
+
 # Start the Docker containers
 echo "Starting Docker containers..."
 docker-compose up
