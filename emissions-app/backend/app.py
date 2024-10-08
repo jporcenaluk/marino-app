@@ -8,6 +8,7 @@ from datetime import timezone
 from google.cloud import firestore, secretmanager_v1
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
+FLASK_ENV = os.environ.get("FLASK_ENV", "prod")
 app = Flask(__name__, static_folder=STATIC_FOLDER, static_url_path='')
 
 db = firestore.Client(project="marino-emissions-app", database="marino-emissions-app")
@@ -31,7 +32,8 @@ def hello():
 def transport():
     try:
         data: dict = request.get_json()
-
+       
+        print("hi")
         recaptcha_token = data.get('captcha')
         if not recaptcha_token:
             return jsonify({'error': 'Missing reCAPTCHA token'}), 400
@@ -46,9 +48,9 @@ def transport():
         )
 
         result: dict = recaptcha_response.json()
-
+        # return jsonify({'success': "you did it"}), 200
         # Verify the success and the score returned
-        if not result.get('success') or result.get('score', 0) < 0.5:
+        if FLASK_ENV == "prod" and (not result.get('success') or result.get('score', 0) < 0.3):
             return jsonify({'error': 'Invalid reCAPTCHA. Please try again.'}), 400
 
 

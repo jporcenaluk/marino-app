@@ -13,17 +13,22 @@ const TransportationForm = ({ onSubmit }) => {
     setDistance(newValue);
   };
 
-  const handleSubmit = () => {
-    window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6LeCt1sqAAAAAGwlD9Sg-qdYZdEbWP6d63tQ3asy', { action: 'submit' }).then((token) => {
-            const formData = {
-                distance,
-                transport_mode: transportMode,
-                captcha: token,
-            };
-            onSubmit(formData);
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    try {
+        window.grecaptcha.ready(() => {
+            window.grecaptcha.execute('6LeCt1sqAAAAAGwlD9Sg-qdYZdEbWP6d63tQ3asy', { action: 'submit' }).then((token) => {
+                const formData = {
+                    distance,
+                    transport_mode: transportMode,
+                    captcha: token,
+                };
+                onSubmit(formData);
+            });
         });
-    });
+    } catch(error) {
+        console.error('Error submitting the form:', error)
+    }
   }
 
   return (
