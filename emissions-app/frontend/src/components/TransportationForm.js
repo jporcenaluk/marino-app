@@ -14,11 +14,16 @@ const TransportationForm = ({ onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    const formData = {
-        distance,
-        transport_mode: transportMode
-    };
-    onSubmit(formData)
+    window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6LeCt1sqAAAAAGwlD9Sg-qdYZdEbWP6d63tQ3asy', { action: 'submit' }).then((token) => {
+            const formData = {
+                distance,
+                transport_mode: transportMode,
+                captcha: token,
+            };
+            onSubmit(formData);
+        });
+    });
   }
 
   return (
