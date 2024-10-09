@@ -6,7 +6,8 @@ from dataclasses import dataclass, asdict
 import datetime as dt
 from datetime import timezone
 from google.cloud import firestore, secretmanager_v1
-import logging
+from calculations.transport_mode import TransportMode
+from calculations.emissions_calc import EmissionsCalc
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
 FLASK_ENV = os.environ.get("FLASK_ENV", "prod")
@@ -25,14 +26,9 @@ def serve_react_app(path):
     # Otherwise, serve the requested file
     return send_from_directory(app.static_folder, path)
 
-@app.route('/api/data')
-def hello():
-    return jsonify({"message": "Marino Maths Week"})
-
 @app.route('/api/transport', methods=["POST"])
 def transport():
     try:
-        logging.info("Got the thing")
         data: dict = request.get_json()
        
         recaptcha_token = data.get('captcha')
@@ -49,15 +45,11 @@ def transport():
         )
 
         result: dict = recaptcha_response.json()
-        logging.info("result", result=result)
-        # return jsonify({'success': "you did it"}), 200
+
         # Verify the success and the score returned
-        # if FLASK_ENV == "prod" and (not result.get('success') or result.get('score', 0) < 0.3):
-        #     # print("recaptcha score": result.get('score', 0))
-        #     print("recaptcha result", vars(result))
-        #     return jsonify({'error': 'Invalid reCAPTCHA. Please try again.'}), 400
-
-
+        min_score = 0.0
+        if FLASK_ENV == "prod" and (not result.get('success') or result.get('score', 0) < min_score):
+            return jsonify({'error': 'Invalid reCAPTCHA. Please try again.'}), 400
 
         # Extract the required fields from the JSON payload
         user_id = data.get('user_id')
@@ -98,11 +90,28 @@ def transport():
     except Exception as e:
         return jsonify({"status": "error"}), 500
 
+def transform_document(doc):
+    distance = doc.get("distance")
+    transport_mode = doc.get("transport_mode")
+    created_utc = doc.get("created_utc")
+    co2_emissions_kg = EmissionsCalc.individual_co2_grams(
+        transport_mode=TransportMode[transport_mode],
+        distance_km=distance
+    )
+    
+    return {
+        "distance": distance,
+        "transport_mode": transport_mode,
+        "date": created_utc,
+        "co2_emissions_kg": co2_emissions_kg
+    }
+
 @app.route('/api/visualisation', methods=["GET"])
 def visualisation():
     try:
         doc_ref = db.collection('daily_transport').stream()
-        docs = [{"distance": doc.get('distance'), 'transport_mode': doc.get('transport_mode')} for doc in doc_ref]
+        docs = [transform_document(doc) for doc in doc_ref]
+        
         return jsonify(docs), 200
     except Exception as e:
         return jsonify({'error': 'Unable to get docs'}), 500

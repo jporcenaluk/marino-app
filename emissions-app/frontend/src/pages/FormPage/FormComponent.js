@@ -65,7 +65,7 @@ function FormComponent() {
 
   return (
     <div>
-      <h1>{message ? message : 'Loading...'}</h1>
+      <h1>Marino Maths Week</h1>
       <TransportationForm onSubmit={handleFormSubmit}/>
     </div>
   );

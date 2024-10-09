@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Slider, Typography, Box, Button } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Slider, Typography, Box, Button, Menu } from '@mui/material';
 
 const TransportationForm = ({ onSubmit }) => {
   const [transportMode, setTransportMode] = useState('');
@@ -33,8 +33,8 @@ const TransportationForm = ({ onSubmit }) => {
 
   return (
     <Box sx={{ width: 300, margin: '0 auto', textAlign: 'center' }}>
+      <Typography gutterBottom>Primary Mode of Transport</Typography>
       <FormControl fullWidth sx={{ marginBottom: 3 }}>
-        <InputLabel id="mode-label">Mode of Transportation</InputLabel>
         <Select
           labelId="mode-label"
           value={transportMode}
@@ -42,7 +42,13 @@ const TransportationForm = ({ onSubmit }) => {
           onChange={handleTransportModeChange}
         >
           <MenuItem value="bike">Bike</MenuItem>
-          <MenuItem value="walk">Walk</MenuItem>
+          <MenuItem value="car_electric">Car (Electric)</MenuItem>
+          <MenuItem value="car_petrol_or_diesel">Car (Petrol or Diesel)</MenuItem>
+          <MenuItem value="car_plugin_hybrid">Car (Plugin Hybrid)</MenuItem>
+          <MenuItem value="motorbike">Motorbike</MenuItem>
+          <MenuItem value="train">Train</MenuItem>
+          <MenuItem value="tram_or_bus">Tram or Bus</MenuItem>
+          <MenuItem value="walk">None. I Walked!</MenuItem>
         </Select>
       </FormControl>
 
