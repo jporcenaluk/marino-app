@@ -6,13 +6,14 @@ from dataclasses import dataclass, asdict
 import datetime as dt
 from datetime import timezone
 from google.cloud import firestore, secretmanager_v1
+import logging
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
 FLASK_ENV = os.environ.get("FLASK_ENV", "prod")
 app = Flask(__name__, static_folder=STATIC_FOLDER, static_url_path='')
 
 db = firestore.Client(project="marino-emissions-app", database="marino-emissions-app")
-RECAPTCHA_SECRET_KEY = secretmanager_v1.SecretManagerServiceAsyncClient().get_secret("projects/399159252007/secrets/marino-emissions-app-recaptcha")
+RECAPTCHA_SECRET_KEY = secretmanager_v1.SecretManagerServiceClient().get_secret(name="projects/399159252007/secrets/marino-emissions-app-recaptcha")
 
 # Serve React App
 @app.route('/', defaults={'path': ''})
@@ -31,9 +32,9 @@ def hello():
 @app.route('/api/transport', methods=["POST"])
 def transport():
     try:
+        logging.info("Got the thing")
         data: dict = request.get_json()
        
-        print("hi")
         recaptcha_token = data.get('captcha')
         if not recaptcha_token:
             return jsonify({'error': 'Missing reCAPTCHA token'}), 400
@@ -48,10 +49,13 @@ def transport():
         )
 
         result: dict = recaptcha_response.json()
+        logging.info("result", result=result)
         # return jsonify({'success': "you did it"}), 200
         # Verify the success and the score returned
-        if FLASK_ENV == "prod" and (not result.get('success') or result.get('score', 0) < 0.3):
-            return jsonify({'error': 'Invalid reCAPTCHA. Please try again.'}), 400
+        # if FLASK_ENV == "prod" and (not result.get('success') or result.get('score', 0) < 0.3):
+        #     # print("recaptcha score": result.get('score', 0))
+        #     print("recaptcha result", vars(result))
+        #     return jsonify({'error': 'Invalid reCAPTCHA. Please try again.'}), 400
 
 
 
@@ -93,7 +97,16 @@ def transport():
         return jsonify({"status": "success"}), 200
     except Exception as e:
         return jsonify({"status": "error"}), 500
-    
+
+@app.route('/api/visualisation', methods=["GET"])
+def visualisation():
+    try:
+        doc_ref = db.collection('daily_transport').stream()
+        docs = [{"distance": doc.get('distance'), 'transport_mode': doc.get('transport_mode')} for doc in doc_ref]
+        return jsonify(docs), 200
+    except Exception as e:
+        return jsonify({'error': 'Unable to get docs'}), 500
+
 if __name__ == "__main__":
     # port is set in GCP; otherwise use 8080
     port = int(os.environ.get("PORT", 8080))
