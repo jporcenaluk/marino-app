@@ -8,13 +8,15 @@ from datetime import timezone
 from google.cloud import firestore, secretmanager_v1
 from calculations.transport_mode import TransportMode, TransportMetadata
 from calculations.emissions_calc import EmissionsCalc
+from recaptcha.recaptcha import recaptcha_secret
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
 FLASK_ENV = os.environ.get("FLASK_ENV", "prod")
+GCP_PROJECT = "marino-emissions-app"
 app = Flask(__name__, static_folder=STATIC_FOLDER, static_url_path='')
 
-db = firestore.Client(project="marino-emissions-app", database="marino-emissions-app")
-RECAPTCHA_SECRET_KEY = secretmanager_v1.SecretManagerServiceClient().get_secret(name="projects/399159252007/secrets/marino-emissions-app-recaptcha")
+db = firestore.Client(project=GCP_PROJECT, database="marino-emissions-app")
+RECAPTCHA_SECRET_KEY = recaptcha_secret(GCP_PROJECT)
 
 # Serve React App
 @app.route('/', defaults={'path': ''})
@@ -47,10 +49,12 @@ def transport():
         result: dict = recaptcha_response.json()
 
         # Verify the success and the score returned
-        min_score = 0.0
-        if FLASK_ENV == "prod" and (not result.get('success') or result.get('score', 0) < min_score):
+        min_score = 0.4
+        if not result.get('success'):
             return jsonify({'error': 'Invalid reCAPTCHA. Please try again.'}), 400
-
+        if result.get('score', 0) < min_score:
+            return jsonify({'error': 'You are a bot, I am pretty sure'}), 400
+        
         # Extract the required fields from the JSON payload
         user_id = data.get('user_id')
         distance = data.get('distance')
