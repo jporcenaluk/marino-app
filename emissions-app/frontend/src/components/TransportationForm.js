@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Slider, Typography, Box, Button, Menu } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Slider, Typography, Box, Button, Menu, FormLabel } from '@mui/material';
 
 const TransportationForm = ({ onSubmit }) => {
   const [transportMode, setTransportMode] = useState('');
@@ -33,12 +33,13 @@ const TransportationForm = ({ onSubmit }) => {
 
   return (
     <Box sx={{ width: 300, margin: '0 auto', textAlign: 'center' }}>
-      <Typography gutterBottom>Primary Mode of Transport</Typography>
-      <FormControl fullWidth sx={{ marginBottom: 3 }}>
+      <Typography sx={{ textAlign: 'left'}}>What was your primary mode of transport to school today, and how far did you travel?</Typography>
+      <FormControl fullWidth sx={{ marginTop: 6 }}>
+        <InputLabel htmlFor="transportation-mode">Transportation Mode</InputLabel>
         <Select
-          labelId="mode-label"
+          id="transportation-mode"
           value={transportMode}
-          label="Mode of Transportation"
+          label="Transportation Mode"
           onChange={handleTransportModeChange}
         >
           <MenuItem value="bike">Bike</MenuItem>
@@ -52,7 +53,7 @@ const TransportationForm = ({ onSubmit }) => {
         </Select>
       </FormControl>
 
-      <Typography gutterBottom>Distance (km)</Typography>
+      <Typography gutterBottom sx={{ marginTop: 6 }}>Distance (km)</Typography>
       <Slider
         value={distance}
         onChange={handleDistanceChange}
@@ -61,6 +62,7 @@ const TransportationForm = ({ onSubmit }) => {
         min={0}
         max={100}
       />
+
 
       <Button variant="contained" sx={{ marginTop: 3}} onClick={handleSubmit}>
         Submit

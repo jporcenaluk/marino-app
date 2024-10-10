@@ -6,7 +6,7 @@ from dataclasses import dataclass, asdict
 import datetime as dt
 from datetime import timezone
 from google.cloud import firestore, secretmanager_v1
-from calculations.transport_mode import TransportMode
+from calculations.transport_mode import TransportMode, TransportMetadata
 from calculations.emissions_calc import EmissionsCalc
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
@@ -91,17 +91,20 @@ def transport():
         return jsonify({"status": "error"}), 500
 
 def transform_document(doc):
+ 
     distance = doc.get("distance")
     transport_mode = doc.get("transport_mode")
     created_utc = doc.get("created_utc")
-    co2_emissions_kg = EmissionsCalc.individual_co2_grams(
-        transport_mode=TransportMode[transport_mode],
+    transport_metadata: TransportMetadata = getattr(TransportMode(), transport_mode)
+    co2_emissions_kg = EmissionsCalc.individual_co2_kg(
+        transport_metadata=transport_metadata,
         distance_km=distance
     )
     
     return {
         "distance": distance,
         "transport_mode": transport_mode,
+        "transport_mode_friendly": transport_metadata.friendly_name,
         "date": created_utc,
         "co2_emissions_kg": co2_emissions_kg
     }
@@ -110,11 +113,11 @@ def transform_document(doc):
 def visualisation():
     try:
         doc_ref = db.collection('daily_transport').stream()
-        docs = [transform_document(doc) for doc in doc_ref]
+        docs = [transform_document(doc) for doc in list(doc_ref)]
         
         return jsonify(docs), 200
     except Exception as e:
-        return jsonify({'error': 'Unable to get docs'}), 500
+        return jsonify({'error': e}), 500
 
 if __name__ == "__main__":
     # port is set in GCP; otherwise use 8080
