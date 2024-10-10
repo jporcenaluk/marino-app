@@ -22,11 +22,10 @@ RECAPTCHA_SECRET_KEY = recaptcha_secret(GCP_PROJECT)
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react_app(path):
-    # If the path is empty or does not exist, serve index.html
-    if path == "" or not os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, 'index.html')
-    # Otherwise, serve the requested file
-    return send_from_directory(app.static_folder, path)
+    if path != "" and path.startswith('api'):
+        # If it's an API route, return 404
+        return "API not found", 404
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api/transport', methods=["POST"])
 def transport():
