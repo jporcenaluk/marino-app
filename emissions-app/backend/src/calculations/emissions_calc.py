@@ -1,4 +1,4 @@
-from app.calculations.transport_mode import TransportMetadata
+from calculations.transport_mode import TransportMetadata
 
 class EmissionsCalc:
     """

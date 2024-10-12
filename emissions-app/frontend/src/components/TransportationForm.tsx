@@ -26,8 +26,8 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     try {
-        window.grecaptcha.ready(() => {
-            window.grecaptcha.execute('6LeCt1sqAAAAAGwlD9Sg-qdYZdEbWP6d63tQ3asy', { action: 'submit' }).then((token: string) => {
+        (window as any).grecaptcha.ready(() => {
+            (window as any).grecaptcha.execute('6LeCt1sqAAAAAGwlD9Sg-qdYZdEbWP6d63tQ3asy', { action: 'submit' }).then((token: string) => {
                 const formData = {
                     distance,
                     transport_mode: transportMode,
@@ -43,7 +43,7 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
 
   return (
     <Box sx={{ width: 300, margin: '0 auto', textAlign: 'center' }}>
-      <Typography sx={{ textAlign: 'left'}}>What was your primary mode of transport to school today, and how far did you travel?</Typography>
+      <Typography sx={{ textAlign: 'left'}}>What was your primary mode of transport to school today, and how far did you travel??</Typography>
       <FormControl fullWidth sx={{ marginTop: 6 }}>
         <InputLabel htmlFor="transportation-mode">Transportation Mode</InputLabel>
         <Select

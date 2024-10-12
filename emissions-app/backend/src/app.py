@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, send_from_directory
 from dataclasses import dataclass, asdict
 import datetime as dt
 from datetime import timezone
-from google.cloud import firestore, secretmanager_v1
+from google.cloud import firestore
 from calculations.transport_mode import TransportMode, TransportMetadata
 from calculations.emissions_calc import EmissionsCalc
 from recaptcha.recaptcha import recaptcha_secret

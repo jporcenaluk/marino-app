@@ -21,14 +21,13 @@ COPY backend/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy Flask app code
-COPY backend/ .
+COPY backend/src/ .
 
 # Copy React build from frontend-build stage to Flask's static folder
-COPY --from=frontend-build /app/frontend/build /app/static
+COPY --from=frontend-build /app/frontend/dist /app/static
 
 EXPOSE 8080
 
 # Use Gunicorn as the WSGI server for production
 # Port 8080 is set by default, overridden by $PORT if available
 CMD gunicorn -b 0.0.0.0:${PORT:-8080} app:app
-

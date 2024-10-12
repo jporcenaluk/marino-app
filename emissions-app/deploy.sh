@@ -4,7 +4,8 @@ export PROJECT_ID="marino-emissions-app"
 export REGION="europe-west1"
 export DOCKER_REGISTRY="$REGION-docker.pkg.dev"
 export DOCKER_REGISTRY_NAME="marino-app"
-export DOCKER_IMAGE_PATH="$DOCKER_REGISTRY/$PROJECT_ID/$DOCKER_REGISTRY_NAME/$APP_NAME:latest"
+export DATE_TIME_SECONDS_REVISION=$(date +%s)
+export DOCKER_IMAGE_PATH="$DOCKER_REGISTRY/$PROJECT_ID/$DOCKER_REGISTRY_NAME/$APP_NAME:$DATE_TIME_SECONDS_REVISION"
 
 echo "Building app"
 docker build -t $APP_NAME .
