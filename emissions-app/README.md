@@ -25,5 +25,11 @@ Re-build and launch (if dependencies change):
 source rebuild-and-launch.sh
 ```
 
+Running tests
+
+```sh
+source app-test.sh
+```
+
 ## Deploy to Prod (From Local)
 
