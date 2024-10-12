@@ -1,7 +1,7 @@
 import pytest
 
-from calculations.transport_mode import TransportMetadata
-from calculations.emissions_calc import EmissionsCalc
+from src.calculations.transport_mode import TransportMetadata
+from src.calculations.emissions_calc import EmissionsCalc
 
 def test_emissions_calc():
     """
