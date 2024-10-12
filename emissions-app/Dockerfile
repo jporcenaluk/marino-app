@@ -4,12 +4,12 @@ FROM node:20-alpine as frontend-build
 WORKDIR /app/frontend
 
 # Install dependencies based on the lock file (for better caching)
-COPY frontend/package*.json ./
-RUN npm install --silent
+COPY frontend/package.json frontend/yarn.lock ./
+RUN yarn install --silent
 
 # Copy the rest of the React app and build it
 COPY frontend/ ./
-RUN npm run build
+RUN yarn run build
 
 # Stage 2: Build the Flask backend (Python 3.12)
 FROM python:3.12-slim as backend

@@ -1,19 +1,10 @@
-import React, { useEffect, useState } from 'react';
 import TransportationForm from '../../components/TransportationForm';
 import { useNavigate } from 'react-router-dom';
 
+
 function FormComponent() {
-  const [message, setMessage] = useState('');
   const USER_ID_KEY = 'user_id';
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Fetch the backend API
-    fetch('/api/data')
-      .then(response => response.json())
-      .then(data => setMessage(data.message))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
 
   const getUserId = () => {
     let id = localStorage.getItem(USER_ID_KEY);
@@ -28,7 +19,7 @@ function FormComponent() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 
-  const handleFormSubmit = async (formData) => {
+  const handleFormSubmit = async (formData: any) => {
     // Get Metadata
     const tzIdentifier = getTzIdentifier();
     const userId = getUserId();

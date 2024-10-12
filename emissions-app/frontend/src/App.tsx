@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FormComponent from './pages/FormPage/FormComponent';
 import VisualisationComponent from './pages/VisualisationPage/VisualisationComponent'

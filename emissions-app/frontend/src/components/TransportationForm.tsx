@@ -1,23 +1,33 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Slider, Typography, Box, Button, Menu, FormLabel } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Slider, Typography, Box, Button, SelectChangeEvent } from '@mui/material';
 
-const TransportationForm = ({ onSubmit }) => {
+interface TransportationFormProps {
+  onSubmit: (formData: FormData) => void;
+}
+
+interface FormData {
+  distance: number;
+  transport_mode: string;
+  captcha: string;
+}
+
+const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
   const [transportMode, setTransportMode] = useState('');
   const [distance, setDistance] = useState(0);
 
-  const handleTransportModeChange = (event) => {
+  const handleTransportModeChange = (event: SelectChangeEvent) => {
     setTransportMode(event.target.value);
   };
 
-  const handleDistanceChange = (event, newValue) => {
-    setDistance(newValue);
+  const handleDistanceChange = (_event: Event, newValue: number | number[]) => {
+    setDistance(newValue as number);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     try {
         window.grecaptcha.ready(() => {
-            window.grecaptcha.execute('6LeCt1sqAAAAAGwlD9Sg-qdYZdEbWP6d63tQ3asy', { action: 'submit' }).then((token) => {
+            window.grecaptcha.execute('6LeCt1sqAAAAAGwlD9Sg-qdYZdEbWP6d63tQ3asy', { action: 'submit' }).then((token: string) => {
                 const formData = {
                     distance,
                     transport_mode: transportMode,
