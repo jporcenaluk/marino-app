@@ -29,6 +29,9 @@ def serve_react_app(path):
 
 @app.route('/api/transport', methods=["POST"])
 def transport():
+    """
+    Retrieves the transport data to be summarised
+    """
     try:
         data: dict = request.get_json()
        

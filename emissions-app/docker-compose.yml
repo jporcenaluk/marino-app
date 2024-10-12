@@ -4,7 +4,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.dev
     volumes:
-      - ./backend:/app
+      - ./backend/app:/app
       - /home/jporcenaluk/keys/marino-emissions-app-ddd3dd1803cb.json:/keys/marino-emissions-app.json
     ports:
       - '8080:8080'
