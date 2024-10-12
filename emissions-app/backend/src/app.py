@@ -6,8 +6,9 @@ from dataclasses import dataclass, asdict
 import datetime as dt
 from datetime import timezone
 from google.cloud import firestore
-from calculations.transport_mode import TransportMode, TransportMetadata
-from calculations.emissions_calc import EmissionsCalc
+from models.daily_individual_response import DailyIndividualResponse, DailyIndividualResponseBase
+from stats.total_summary import Summary
+from stats.daily_individual import Individual
 from recaptcha.recaptcha import recaptcha_secret
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
@@ -71,17 +72,7 @@ def transport():
         # Write to Firestore
         doc_ref = db.collection('daily_transport').document(document_id)  # Creates a new document
 
-        @dataclass
-        class DailyTransport:
-            created_utc: dt.datetime
-            distance: int
-            email: str
-            ip_address: str
-            transport_mode: str
-            user_id: str
-            tz_identifier: str = "Eire"
-
-        daily_transport = DailyTransport(
+        daily_transport = DailyIndividualResponse(
             created_utc=now_utc,
             distance=distance,
             user_id=user_id,
@@ -96,30 +87,17 @@ def transport():
     except Exception as e:
         return jsonify({"status": "error"}), 500
 
-def transform_document(doc):
- 
-    distance = doc.get("distance")
-    transport_mode = doc.get("transport_mode")
-    created_utc = doc.get("created_utc")
-    transport_metadata: TransportMetadata = getattr(TransportMode(), transport_mode)
-    co2_emissions_kg = EmissionsCalc.individual_co2_kg(
-        transport_metadata=transport_metadata,
-        distance_km=distance
-    )
-    
-    return {
-        "distance": distance,
-        "transport_mode": transport_mode,
-        "transport_mode_friendly": transport_metadata.friendly_name,
-        "date": created_utc,
-        "co2_emissions_kg": co2_emissions_kg
-    }
 
 @app.route('/api/visualisation', methods=["GET"])
 def visualisation():
     try:
         doc_ref = db.collection('daily_transport').stream()
-        docs = [transform_document(doc) for doc in list(doc_ref)]
+        docs = [DailyIndividualResponseBase(
+            created_utc=doc.get("created_utc"),
+            distance_km=doc.get("distance"),
+            transport_mode=doc.get("transport_mode"),
+            tz_identifier=doc.get("tz_identifier")
+        ) for doc in list(doc_ref)]
         
         return jsonify(docs), 200
     except Exception as e:
