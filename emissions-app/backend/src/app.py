@@ -21,7 +21,7 @@ from recaptcha.recaptcha import recaptcha_secret
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
 FLASK_ENV = os.environ.get("FLASK_ENV", "prod")
 GCP_PROJECT = "marino-emissions-app"
-app = Flask(__name__, static_folder=STATIC_FOLDER, static_url_path="")
+app = Flask(__name__, static_folder=STATIC_FOLDER)
 
 FIRESTORE_CLIENT = None
 RECAPTCHA_SECRET_KEY = recaptcha_secret(GCP_PROJECT)
@@ -36,10 +36,11 @@ def firestore_client():
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def serve_react_app(path):
-    if path != "" and path.startswith("api"):
-        # If it's an API route, return 404
+    if path.startswith('api'):
+        # Let the API routes be handled elsewhere
         return "API not found", 404
-    return send_from_directory(app.static_folder, "index.html")
+    else:
+        return app.send_static_file('index.html')
 
 
 @app.route("/api/transport", methods=["POST"])
