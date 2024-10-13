@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 
 @dataclass
 class TransportMetadata:
+    id: str
     friendly_name: str
     co2_grams_per_km: int
 
@@ -11,11 +12,20 @@ class TransportMode:
     The mode of transportation, and the enumeration is the
     amount of co2 emitted per kilometer
     """
-    bike: TransportMetadata = field(default_factory=lambda: TransportMetadata("Bike", 25))
-    car_electric: TransportMetadata =  field(default_factory=lambda: TransportMetadata("Car (Electric)", 47))
-    car_petrol_or_diesel: TransportMetadata =  field(default_factory=lambda: TransportMetadata("Car (Petrol or Diesel)", 171))
-    car_plugin_hybrid: TransportMetadata =  field(default_factory=lambda: TransportMetadata("Car (Plugin Hybrid)", 68))
-    motorbike: TransportMetadata =  field(default_factory=lambda: TransportMetadata("Motorbike", 114))
-    train: TransportMetadata =  field(default_factory=lambda: TransportMetadata("Train", 35))
-    tram_or_bus: TransportMetadata =  field(default_factory=lambda: TransportMetadata("Tram or Bus", 29))
-    walk: TransportMetadata =  field(default_factory=lambda: TransportMetadata("Walk", 22))
+    _transport_modes = [
+        TransportMetadata(id="bike", friendly_name="Bike", co2_grams_per_km=25),
+        TransportMetadata(id="car_electric", friendly_name="Car (Electric)", co2_grams_per_km=47),
+        TransportMetadata(id="car_petrol_or_diesel", friendly_name="Car (Petrol or Diesel)", co2_grams_per_km=171),
+        TransportMetadata(id="car_plugin_hybrid", friendly_name="Car (Plugin Hybrid)", co2_grams_per_km=68),
+        TransportMetadata(id="motorbike", friendly_name="Motorbike", co2_grams_per_km=114),
+        TransportMetadata(id="train", friendly_name="Train", co2_grams_per_km=35),
+        TransportMetadata(id="tram_or_bus", friendly_name="Tram or Bus", co2_grams_per_km=29),
+        TransportMetadata(id="walk", friendly_name="Walk", co2_grams_per_km=22),
+    ]
+    
+    # Create a dictionary for easy lookup by ID
+    transport_mode_dict = {mode.id: mode for mode in _transport_modes}
+
+    @classmethod
+    def get_by_id(cls, mode_id: str) -> TransportMetadata:
+        return cls.transport_mode_dict.get(mode_id)
