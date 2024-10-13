@@ -1,8 +1,8 @@
-import TransportationForm from '../../components/TransportationForm';
+import TransportationForm from '../components/TransportationForm';
 import { useNavigate } from 'react-router-dom';
 
 
-function FormComponent() {
+function HomePage() {
   const USER_ID_KEY = 'user_id';
   const navigate = useNavigate();
 
@@ -62,4 +62,4 @@ function FormComponent() {
   );
 }
 
-export default FormComponent;
+export default HomePage;

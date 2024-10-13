@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './VisualisationComponent.css';
+import './Story01Summary.css';
 
 interface RecordData {
   avg_co2_kg_per_record: number;
@@ -18,7 +18,7 @@ interface Document {
   weekly: Omit<RecordData, 'date'>; // weekly object doesn't contain a 'date'
 }
 
-function VisualisationComponent() {
+function Story01Summary() {
   const [documents, setDocuments] = useState<Document>();
   const [loading, setLoading] = useState(true);
 
@@ -74,4 +74,4 @@ function VisualisationComponent() {
   );
 }
 
-export default VisualisationComponent;
+export default Story01Summary;

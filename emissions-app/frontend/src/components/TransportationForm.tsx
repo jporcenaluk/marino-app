@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Slider } from '@mui/base/Slider';
+import React, { useState, ChangeEvent } from 'react';
+import "./TransportationForm.css";
 
 interface TransportationFormProps {
   onSubmit: (formData: FormData) => void;
@@ -12,15 +12,15 @@ interface FormData {
 }
 
 const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
-  const [transportMode, setTransportMode] = useState('');
-  const [distanceKm, setDistanceKm] = useState(0);
+  const [transportMode, setTransportMode] = useState<string>('');
+  const [distanceKm, setDistanceKm] = useState<number>(0);
 
-  const handleTransportModeChange = (event: any) => {
+  const handleTransportModeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setTransportMode(event.target.value);
   };
 
-  const handleDistanceChange = (_event: Event, newValue: number | number[]) => {
-    setDistanceKm(newValue as number);
+  const handleDistanceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setDistanceKm(Number(event.target.value));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -65,12 +65,7 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
 
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Distance (km)</label>
-          <Slider 
-            value={distanceKm}
-            onChange={handleDistanceChange}
-            min={0}
-            max={50}
-          />
+          <input type="range" min="1" max="100" value={distanceKm} className="range" onChange={handleDistanceChange} />
           <p>{distanceKm}</p>
         </div>
 
