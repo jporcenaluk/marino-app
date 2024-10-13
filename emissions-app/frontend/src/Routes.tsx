@@ -12,8 +12,8 @@ const AppRoutes = () => {
       <BrowserRouter>
         <Routes>
             <Route element={<StoryLayout />}>
-                <Route path="/story/01" element={<Story01Summary />} />
-                <Route path="/story/02" element={<Story02Next />} />
+                <Route path="/story/1" element={<Story01Summary />} />
+                <Route path="/story/2" element={<Story02Next />} />
             </Route>
             <Route element={<MainLayout />}>
                 <Route path="/" element={<HomePage />} />

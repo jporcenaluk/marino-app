@@ -43,7 +43,7 @@ function HomePage() {
       const data = await response.json()
       if (response.ok) {
         console.log('Success:', data);
-        navigate('/visualisation')
+        navigate('/story/1')
       } else {
         console.log('Error:', data);
         console.error('API call failed')

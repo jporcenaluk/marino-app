@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { StoryProgressContext } from '../../contexts/StoryProgressContext';
+import { useNavigate } from 'react-router-dom';
 import './Story01Summary.css';
 
 interface RecordData {
@@ -21,6 +23,22 @@ interface Document {
 function Story01Summary() {
   const [documents, setDocuments] = useState<Document>();
   const [loading, setLoading] = useState(true);
+  const context = useContext(StoryProgressContext);
+  const navigate = useNavigate();
+
+  if (!context) {
+    throw new Error('Story01Summary must be used within a StoryProgressProvider');
+  }
+
+  const { setCurrentStep } = context;
+
+  useEffect(() => {
+    setCurrentStep(1);
+  }, [setCurrentStep]);
+
+  const handleNext = () => {
+    navigate('/story/2');
+  };
 
   useEffect(() => {
     async function fetchDocuments() {
@@ -70,6 +88,9 @@ function Story01Summary() {
         <img src="/assets/beach_ball.png" alt="Beach ball representing 1 kg of CO2" className="beach-ball-image" />
       </section>
       <div style={{ display: 'none' }}>{JSON.stringify(documents)}</div>
+      <button className="btn btn-primary mt-4" onClick={handleNext}>
+        Next
+      </button>
     </div>
   );
 }

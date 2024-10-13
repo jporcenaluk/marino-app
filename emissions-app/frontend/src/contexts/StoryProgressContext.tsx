@@ -10,7 +10,7 @@ export const StoryProgressContext = createContext<StoryProgressContextProps | un
   undefined
 );
 
-export const ProgressProvider = (props: PropsWithChildren<StoryProgressContextProps>) => {
+export const StoryProgressProvider = (props: PropsWithChildren<StoryProgressContextProps>) => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 2; // Total number of steps in the wizard
 
