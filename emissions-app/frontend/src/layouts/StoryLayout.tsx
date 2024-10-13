@@ -8,7 +8,7 @@ const StoryLayout = () => (
   <StoryProgressProvider currentStep={1} totalSteps={2} setCurrentStep={() => {}}>
     <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow p-4">
+        <main className="flex-grow p-4 max-w-3xl mx-auto">
           <Outlet />
         </main>
         <ProgressBar />

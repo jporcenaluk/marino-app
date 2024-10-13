@@ -56,7 +56,6 @@ function HomePage() {
 
   return (
     <div>
-      <h1>Marino Maths Week</h1>
       <TransportationForm onSubmit={handleFormSubmit}/>
     </div>
   );

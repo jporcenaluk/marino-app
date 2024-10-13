@@ -43,15 +43,15 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
 
   return (
     <form className="p-4 max-w-md mx-auto" onSubmit={handleSubmit}>
-        <div>What was your primary mode of transport to school today, and how far did you travel??</div>
+        <div className="mb-4">What was your primary mode of transport to school today, and how far did you travel?</div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Transportation Mode</label>
+          <label htmlFor="transportation-mode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Transportation Mode</label>
           <select
             id="transportation-mode"
             value={transportMode}
             onChange={handleTransportModeChange}
-            className="form-select mt-1 block w-full">
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               <option value="bike">Bike</option>
               <option value="car_electric">Car (Electric)</option>
               <option value="car_petrol_or_diesel">Car (Petrol or Diesel)</option>
@@ -68,8 +68,9 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
           <input type="range" min="1" max="100" value={distanceKm} className="range" onChange={handleDistanceChange} />
           <p>{distanceKm}</p>
         </div>
-
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        <div className="flex justify-end">
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        </div>
     </form>
   );
 };
