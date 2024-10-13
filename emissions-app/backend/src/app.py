@@ -15,7 +15,7 @@ from models.daily_individual_response import (
     DailyIndividualResponseBase,
 )
 from stats.daily_individual import DailyIndividual
-from stats.summaries import DailySummary, WeeklySummary
+from stats.summaries import DailySummaries, WeeklySummary
 from recaptcha.recaptcha import recaptcha_secret
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
@@ -23,9 +23,14 @@ FLASK_ENV = os.environ.get("FLASK_ENV", "prod")
 GCP_PROJECT = "marino-emissions-app"
 app = Flask(__name__, static_folder=STATIC_FOLDER, static_url_path="")
 
-db = firestore.Client(project=GCP_PROJECT, database="marino-emissions-app")
+FIRESTORE_CLIENT = None
 RECAPTCHA_SECRET_KEY = recaptcha_secret(GCP_PROJECT)
 
+def firestore_client():
+    global FIRESTORE_CLIENT
+    if not FIRESTORE_CLIENT:
+        FIRESTORE_CLIENT = firestore.Client(project=GCP_PROJECT, database="marino-emissions-app")
+    return FIRESTORE_CLIENT
 
 # Serve React App
 @app.route("/", defaults={"path": ""})
@@ -78,6 +83,7 @@ def transport():
         document_id = f"{date_str}__{user_id}"
 
         # Write to Firestore
+        db = firestore_client()
         doc_ref = db.collection("daily_transport").document(
             document_id
         )  # Creates a new document
@@ -101,12 +107,14 @@ def transport():
 @app.route("/api/visualisation", methods=["GET"])
 def visualisation():
     try:
+        db = firestore_client()
         one_week_ago = dt.datetime.now(tz=timezone.utc) - dt.timedelta(days=7)
         doc_ref = (
             db.collection("daily_transport")
-            .where("created_utc", ">=", one_week_ago)
+            .where(filter=firestore.FieldFilter("created_utc", ">=", one_week_ago))
             .stream()
         )
+
         daily_individual_responses = [
             DailyIndividualResponseBase(
                 created_utc=response.get("created_utc"),
@@ -118,21 +126,15 @@ def visualisation():
         daily_individual_summaries = [
             DailyIndividual(response) for response in daily_individual_responses
         ]
-        grouped_by_day = {}
-        for summary in daily_individual_summaries:
-            date = summary.created_utc.date()
-            if date not in grouped_by_day:
-                grouped_by_day[date] = []
-            grouped_by_day[date].append(summary)
-        daily_summaries = [
-            DailySummary(date=summary, individual_emissions=emissions)
-            for summary, emissions in grouped_by_day.items()
-        ]
-        weekly_summary = WeeklySummary(daily_summaries=daily_individual_summaries)
+
+        daily_summaries = DailySummaries(daily_individuals=daily_individual_summaries)
+
+        weekly_summary = WeeklySummary(daily_individuals=daily_individual_summaries)
+        print(daily_summaries.daily_summaries)
         return (
             jsonify(
                 {
-                    "daily": [asdict(summary) for summary in daily_summaries],
+                    "daily": [asdict(summary) for summary in daily_summaries.daily_summaries],
                     "weekly": asdict(weekly_summary),
                 }
             ),

@@ -12,6 +12,7 @@ services:
       - FLASK_ENV=development
       - FLASK_APP=app.py
       - STATIC_FOLDER=../frontend/build
+      - PYTHONBUFFERED=1
       - GOOGLE_APPLICATION_CREDENTIALS=/keys/marino-emissions-app.json
   frontend:
     build:
