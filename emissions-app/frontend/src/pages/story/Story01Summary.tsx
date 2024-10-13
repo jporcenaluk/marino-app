@@ -60,24 +60,20 @@ function Story01Summary() {
   }
 
   return (
-    <div className="visualisation-container">
-      <header className="visualisation-header">
-        <h1>Marino Maths Week</h1>
+    <div>
+      <section>
         <h2>Marino Students & Staff</h2>
         <p>Estimated Commuting Emissions This Week</p>
-      </header>
-      <section className="visualisation-stats">
-        <div className="stat">
-          <p className="stat-value">
-            {Math.round(documents?.weekly.estimated_total_co2_kg ?? 0).toLocaleString()}
-          </p>
-          <p className="stat-label">kg CO2</p>
-        </div>
-        <div className="stat">
-          <p className="stat-value">
-            {Math.round(documents?.weekly.estimated_total_distance_km ?? 0).toLocaleString()}
-          </p>
-          <p className="stat-label">km</p>
+        <div className="grid">
+          <div className="p-4">
+            <p>{Math.round(documents?.weekly.estimated_total_co2_kg ?? 0).toLocaleString()}</p>
+            <p className="stat-label">kg CO2</p>
+          </div>
+
+          <div className="p-4">
+            <p>{Math.round(documents?.weekly.estimated_total_distance_km ?? 0).toLocaleString()}</p>
+            <p className="stat-label">km</p>
+          </div>
         </div>
       </section>
       <section className="visualisation-content">
@@ -88,9 +84,11 @@ function Story01Summary() {
         <img src="/assets/beach_ball.png" alt="Beach ball representing 1 kg of CO2" className="beach-ball-image" />
       </section>
       <div style={{ display: 'none' }}>{JSON.stringify(documents)}</div>
-      <button className="btn btn-primary mt-4" onClick={handleNext}>
-        Next
-      </button>
+      <div className="flex justify-end">
+        <button className="btn btn-primary mt-4" onClick={handleNext}>
+          Next
+        </button>
+      </div>
     </div>
   );
 }

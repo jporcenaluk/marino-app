@@ -5,14 +5,14 @@ import Footer from '../components/Footer';
 import { StoryProgressProvider } from '../contexts/StoryProgressContext';
 
 const StoryLayout = () => (
-  <StoryProgressProvider>
-    <div className="font-sans bg-gray-100 p-6">
-      <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+  <StoryProgressProvider currentStep={1} totalSteps={2} setCurrentStep={() => {}}>
+    <div className="min-h-screen flex flex-col">
         <Header />
-        <Outlet />
+        <main className="flex-grow p-4">
+          <Outlet />
+        </main>
         <ProgressBar />
         <Footer />
-      </div>
     </div>
   </StoryProgressProvider>
 );
