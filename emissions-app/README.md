@@ -33,3 +33,7 @@ source app-test.sh
 
 ## Deploy to Prod (From Local)
 
+```sh
+bash deploy.sh
+```
+

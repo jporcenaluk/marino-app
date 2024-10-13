@@ -6,21 +6,21 @@ interface TransportationFormProps {
 }
 
 interface FormData {
-  distance: number;
+  distance_km: number;
   transport_mode: string;
   captcha: string;
 }
 
 const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
   const [transportMode, setTransportMode] = useState('');
-  const [distance, setDistance] = useState(0);
+  const [distanceKm, setDistanceKm] = useState(0);
 
   const handleTransportModeChange = (event: SelectChangeEvent) => {
     setTransportMode(event.target.value);
   };
 
   const handleDistanceChange = (_event: Event, newValue: number | number[]) => {
-    setDistance(newValue as number);
+    setDistanceKm(newValue as number);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -29,7 +29,7 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
         (window as any).grecaptcha.ready(() => {
             (window as any).grecaptcha.execute('6LeCt1sqAAAAAGwlD9Sg-qdYZdEbWP6d63tQ3asy', { action: 'submit' }).then((token: string) => {
                 const formData = {
-                    distance,
+                    distance_km: distanceKm,
                     transport_mode: transportMode,
                     captcha: token,
                 };
@@ -65,7 +65,7 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
 
       <Typography gutterBottom sx={{ marginTop: 6 }}>Distance (km)</Typography>
       <Slider
-        value={distance}
+        value={distanceKm}
         onChange={handleDistanceChange}
         aria-labelledby="distance-slider"
         valueLabelDisplay="auto"
@@ -82,7 +82,7 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
         Selected Mode: {transportMode ? transportMode : 'None'}
       </Typography>
       <Typography variant="body1">
-        Distance: {distance} km
+        Distance: {distanceKm} km
       </Typography>
     </Box>
   );
