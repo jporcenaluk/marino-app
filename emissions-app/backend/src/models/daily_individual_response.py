@@ -7,9 +7,8 @@ class DailyIndividualResponseBase:
     The non-sensitive information for daily transport of an
     """
     created_utc: dt.datetime
-    distance: int
+    distance_km: int
     transport_mode: str
-    tz_identifier: str = "Eire"
 
 @dataclass
 class DailyIndividualResponse(DailyIndividualResponseBase):
@@ -19,3 +18,4 @@ class DailyIndividualResponse(DailyIndividualResponseBase):
     email: str
     ip_address: str
     user_id: str
+    tz_identifier: str = "Europe/London"
