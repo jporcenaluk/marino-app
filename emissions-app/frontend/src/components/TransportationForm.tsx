@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Slider, Typography, Box, Button, SelectChangeEvent } from '@mui/material';
+import { Slider } from '@mui/base/Slider';
 
 interface TransportationFormProps {
   onSubmit: (formData: FormData) => void;
@@ -15,7 +15,7 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
   const [transportMode, setTransportMode] = useState('');
   const [distanceKm, setDistanceKm] = useState(0);
 
-  const handleTransportModeChange = (event: SelectChangeEvent) => {
+  const handleTransportModeChange = (event: any) => {
     setTransportMode(event.target.value);
   };
 
@@ -42,49 +42,40 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
   }
 
   return (
-    <Box sx={{ width: 300, margin: '0 auto', textAlign: 'center' }}>
-      <Typography sx={{ textAlign: 'left'}}>What was your primary mode of transport to school today, and how far did you travel??</Typography>
-      <FormControl fullWidth sx={{ marginTop: 6 }}>
-        <InputLabel htmlFor="transportation-mode">Transportation Mode</InputLabel>
-        <Select
-          id="transportation-mode"
-          value={transportMode}
-          label="Transportation Mode"
-          onChange={handleTransportModeChange}
-        >
-          <MenuItem value="bike">Bike</MenuItem>
-          <MenuItem value="car_electric">Car (Electric)</MenuItem>
-          <MenuItem value="car_petrol_or_diesel">Car (Petrol or Diesel)</MenuItem>
-          <MenuItem value="car_plugin_hybrid">Car (Plugin Hybrid)</MenuItem>
-          <MenuItem value="motorbike">Motorbike</MenuItem>
-          <MenuItem value="train">Train</MenuItem>
-          <MenuItem value="tram_or_bus">Tram or Bus</MenuItem>
-          <MenuItem value="walk">None. I Walked!</MenuItem>
-        </Select>
-      </FormControl>
+    <form className="p-4 max-w-md mx-auto" onSubmit={handleSubmit}>
+        <div>What was your primary mode of transport to school today, and how far did you travel??</div>
 
-      <Typography gutterBottom sx={{ marginTop: 6 }}>Distance (km)</Typography>
-      <Slider
-        value={distanceKm}
-        onChange={handleDistanceChange}
-        aria-labelledby="distance-slider"
-        valueLabelDisplay="auto"
-        min={0}
-        max={100}
-      />
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Transportation Mode</label>
+          <select
+            id="transportation-mode"
+            value={transportMode}
+            onChange={handleTransportModeChange}
+            className="form-select mt-1 block w-full">
+              <option value="bike">Bike</option>
+              <option value="car_electric">Car (Electric)</option>
+              <option value="car_petrol_or_diesel">Car (Petrol or Diesel)</option>
+              <option value="car_plugin_hybrid">Car (Plugin Hybrid)</option>
+              <option value="motorbike">Motorbike</option>
+              <option value="train">Train</option>
+              <option value="tram_or_bus">Tram or Bus</option>
+              <option value="walk">None. I Walked!</option>
+            </select>
+        </div>
 
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Distance (km)</label>
+          <Slider 
+            value={distanceKm}
+            onChange={handleDistanceChange}
+            min={0}
+            max={50}
+          />
+          <p>{distanceKm}</p>
+        </div>
 
-      <Button variant="contained" sx={{ marginTop: 3}} onClick={handleSubmit}>
-        Submit
-      </Button>
-
-      <Typography variant="body1" sx={{ marginTop: 3 }}>
-        Selected Mode: {transportMode ? transportMode : 'None'}
-      </Typography>
-      <Typography variant="body1">
-        Distance: {distanceKm} km
-      </Typography>
-    </Box>
+        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+    </form>
   );
 };
 

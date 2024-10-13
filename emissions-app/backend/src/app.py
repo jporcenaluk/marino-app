@@ -19,7 +19,7 @@ from stats.summaries import DailySummaries, WeeklySummary
 from recaptcha.recaptcha import recaptcha_secret
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
-FLASK_ENV = os.environ.get("FLASK_ENV", "prod")
+FLASK_ENV = os.environ.get("FLASK_ENV", "production")
 GCP_PROJECT = "marino-emissions-app"
 app = Flask(__name__, static_folder=STATIC_FOLDER)
 
@@ -32,15 +32,16 @@ def firestore_client():
         FIRESTORE_CLIENT = firestore.Client(project=GCP_PROJECT, database="marino-emissions-app")
     return FIRESTORE_CLIENT
 
-# Serve React App
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
 def serve_react_app(path):
-    if path.startswith('api'):
-        # Let the API routes be handled elsewhere
+    if path != "" and path.startswith("api"):
         return "API not found", 404
-    else:
+    if FLASK_ENV == 'production':
         return app.send_static_file('index.html')
+    else:
+        # In development, the frontend is served by Vite on port 3000
+        return jsonify({"message": "Frontend running in development mode"}), 200
 
 
 @app.route("/api/transport", methods=["POST"])
