@@ -8,7 +8,7 @@ export DATE_TIME_SECONDS_REVISION=$(date +%s)
 export DOCKER_IMAGE_PATH="$DOCKER_REGISTRY/$PROJECT_ID/$DOCKER_REGISTRY_NAME/$APP_NAME:$DATE_TIME_SECONDS_REVISION"
 
 echo "Building app"
-docker build -t $APP_NAME .
+docker build -t $APP_NAME . || exit 1
 
 echo "Tagging app"
 docker tag $APP_NAME $DOCKER_IMAGE_PATH
