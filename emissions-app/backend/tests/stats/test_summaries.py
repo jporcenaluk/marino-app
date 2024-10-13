@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from src.stats.summaries import WeeklySummary, DailySummary
-from src.stats.base_calcs import faculty_staff_count
+from src.stats.summaries import WeeklySummary, DailySummary, faculty_staff_count
 
 @pytest.fixture
 def daily_summaries():
@@ -18,10 +17,9 @@ def daily_summaries():
 
     return [daily_summary_1, daily_summary_2]
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def mock_faculty_staff_count():
-    with patch('faculty_staff_count') as mock_faculty_staff_count:
-        mock_faculty_staff_count.return_value = 10
+    with patch("src.stats.summaries.faculty_staff_count", return_value=10) as mock_faculty_staff_count:
         yield mock_faculty_staff_count
 
 def test_weekly_summary_totals(daily_summaries: list[DailySummary]):
