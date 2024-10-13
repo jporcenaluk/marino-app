@@ -1,7 +1,7 @@
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from src.stats.summaries import WeeklySummary, DailySummary
-
+from src.stats.base_calcs import faculty_staff_count
 
 @pytest.fixture
 def daily_summaries():
@@ -18,6 +18,12 @@ def daily_summaries():
 
     return [daily_summary_1, daily_summary_2]
 
+@pytest.fixture
+def mock_faculty_staff_count():
+    with patch('faculty_staff_count') as mock_faculty_staff_count:
+        mock_faculty_staff_count.return_value = 10
+        yield mock_faculty_staff_count
+
 def test_weekly_summary_totals(daily_summaries: list[DailySummary]):
     summary = WeeklySummary(daily_summaries=daily_summaries)
     assert summary.total_recorded_count == 4
@@ -29,3 +35,8 @@ def test_weekly_summary_averages(daily_summaries: list[DailySummary]):
     assert summary.avg_co2_kg_per_record == 0.85
     assert summary.avg_distance_km_per_record == 1.5
     assert round(summary.avg_co2_kg_per_record_per_distance_km, 2) == round(0.85 / 1.5, 2)
+
+def test_weekly_summary_estimates(daily_summaries: list[DailySummary]):
+    summary = WeeklySummary(daily_summaries=daily_summaries)
+    assert summary.estimated_total_co2_kg == 0.85 * 10
+    assert summary.estimated_total_distance_km == 1.5 * 10
