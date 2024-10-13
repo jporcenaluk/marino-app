@@ -29,6 +29,7 @@ class SummaryBase:
     # estimated totals (Marino-specific)
     estimated_total_co2_kg: float
     estimated_total_distance_km: float
+    
 
     def __init__(self, daily_individuals: list[DailyIndividual]):
         self.total_recorded_count = len(daily_individuals)

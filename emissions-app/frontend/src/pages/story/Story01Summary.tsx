@@ -43,7 +43,7 @@ function Story01Summary() {
   useEffect(() => {
     async function fetchDocuments() {
       try {
-        const response = await fetch('/api/visualisation');
+        const response = await fetch('/api/01-story-summary');
         const data: Document = await response.json();
         setDocuments(data);
       } catch (error) {

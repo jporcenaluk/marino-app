@@ -106,14 +106,17 @@ def transport():
         return jsonify({"status": "error", "exception": e}), 500
 
 
-@app.route("/api/visualisation", methods=["GET"])
-def visualisation():
+@app.route("/api/01-story-summary", methods=["GET"])
+def story_summary():
     try:
         db = firestore_client()
         one_week_ago = dt.datetime.now(tz=timezone.utc) - dt.timedelta(days=7)
         doc_ref = (
             db.collection("daily_transport")
             .where(filter=firestore.FieldFilter("created_utc", ">=", one_week_ago))
+            .where(filter=firestore.FieldFilter("distance_km", "!=", None))
+            .where(filter=firestore.FieldFilter("transport_mode", "!=", None))
+            .where(filter=firestore.FieldFilter("distance_km", "!=", 0))
             .stream()
         )
 

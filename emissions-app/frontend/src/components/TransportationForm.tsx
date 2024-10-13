@@ -42,36 +42,42 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
   }
 
   return (
-    <form className="p-4 max-w-md mx-auto" onSubmit={handleSubmit}>
-        <div className="mb-4">What was your primary mode of transport to school today, and how far did you travel?</div>
 
-        <div className="mb-4">
-          <label htmlFor="transportation-mode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Transportation Mode</label>
-          <select
-            id="transportation-mode"
-            value={transportMode}
-            onChange={handleTransportModeChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="bike">Bike</option>
-              <option value="car_electric">Car (Electric)</option>
-              <option value="car_petrol_or_diesel">Car (Petrol or Diesel)</option>
-              <option value="car_plugin_hybrid">Car (Plugin Hybrid)</option>
-              <option value="motorbike">Motorbike</option>
-              <option value="train">Train</option>
-              <option value="tram_or_bus">Tram or Bus</option>
-              <option value="walk">None. I Walked!</option>
-            </select>
-        </div>
+    <form onSubmit={handleSubmit}>
+      <div className="mb-8">
+        <label htmlFor="transportation-mode" className="block mb-2 text-md font-medium text-gray-900 dark:text-white">Transportation Mode</label>
+        <select
+          id="transportation-mode"
+          value={transportMode}
+          onChange={handleTransportModeChange}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="bike">Bike</option>
+            <option value="car_electric">Car (Electric)</option>
+            <option value="car_petrol_or_diesel">Car (Petrol or Diesel)</option>
+            <option value="car_plugin_hybrid">Car (Plugin Hybrid)</option>
+            <option value="motorbike">Motorbike</option>
+            <option value="train">Train</option>
+            <option value="tram_or_bus">Tram or Bus</option>
+            <option value="walk">None. I Walked!</option>
+          </select>
+      </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Distance (km)</label>
-          <input type="range" min="1" max="100" value={distanceKm} className="range" onChange={handleDistanceChange} />
-          <p>{distanceKm}</p>
+      <div className="mb-4">
+        <div className="flex justify-between">
+          <label htmlFor="distance" className="block text-md text-gray-700 mb-2 dark:text-white">Distance (km)</label>
+          <p className="text-md text-gray-700 dark:text-white">{distanceKm} km</p>
         </div>
-        <div className="flex justify-end">
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-        </div>
+        <input id="distance" type="range" min="1" max="100" value={distanceKm} className="range range-lg" onChange={handleDistanceChange} />
+
+      </div>
+      <div className="mb-8 text-xs text-gray-900 dark:text-gray-400">
+        This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+      </div>
+      <div className="flex justify-end">
+        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Maths It Up!</button>
+      </div>
     </form>
+
   );
 };
 
