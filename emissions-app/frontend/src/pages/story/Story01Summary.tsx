@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { StoryProgressContext } from '../../contexts/StoryProgressContext';
+import beachBallImage from '../../assets/beach-ball-measure.png';
 import { useNavigate } from 'react-router-dom';
 import './Story01Summary.css';
 
@@ -84,7 +85,7 @@ function Story01Summary() {
         <h3 className="text-xl">Or, wait, how much CO2 <span className="font-bold">is</span> a kilogram?</h3>
         <span className="text-xs">(It's about as much as fits in a beach ball)</span>
         <div className="flex justify-end">
-          <img src="/beach-ball-measure.png" alt="Beach ball representing 1 kg of CO2" className="w-24 sm:w-32 md:w-48" />
+          <img src={beachBallImage} alt="Beach ball representing 1 kg of CO2" className="w-24 sm:w-32 md:w-48" />
         </div>
       </section>
       <p>
