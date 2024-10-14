@@ -2,7 +2,7 @@ import logging
 import datetime as dt
 from dataclasses import dataclass
 from stats.daily_individual import DailyIndividual
-from stats.base_calcs import faculty_staff_count, average
+from stats.base_calcs import total_population, average
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +27,9 @@ class SummaryBase:
     avg_co2_kg_per_record_per_distance_km: float
 
     # estimated totals (Marino-specific)
-    estimated_total_co2_kg: float
-    estimated_total_distance_km: float
+    total_estimate_co2_kg: float
+    total_estimate_distance_km: float
+
 
     def __init__(self, daily_individuals: list[DailyIndividual]):
         self.total_recorded_count = len(daily_individuals)
@@ -47,9 +48,9 @@ class SummaryBase:
         self.avg_co2_kg_per_record_per_distance_km = average(
             self.avg_co2_kg_per_record, self.avg_distance_km_per_record
         )
-        self.estimated_total_co2_kg = self.avg_co2_kg_per_record * faculty_staff_count()
-        self.estimated_total_distance_km = (
-            self.avg_distance_km_per_record * faculty_staff_count()
+        self.total_estimate_co2_kg = self.avg_co2_kg_per_record * total_population()
+        self.total_estimate_distance_km = (
+            self.avg_distance_km_per_record * total_population()
         )
 
 

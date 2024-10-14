@@ -51,8 +51,8 @@ def test_weekly_summary_averages(daily_individuals: list[DailyIndividual]):
 
 def test_weekly_summary_estimates(daily_individuals: list[DailyIndividual]):
     summary = WeeklySummary(daily_individuals=daily_individuals)
-    assert summary.estimated_total_co2_kg == 1.1 * 10
-    assert summary.estimated_total_distance_km == 3 * 10
+    assert summary.total_estimate_co2_kg == 1.1 * 10
+    assert summary.total_estimate_distance_km == 3 * 10
 
 
 def test_daily_summary_totals(daily_individuals: list[DailyIndividual]):
@@ -77,5 +77,5 @@ def test_daily_summary_estimates(daily_individuals: list[DailyIndividual]):
     summary = DailySummary(
         date=dt.date(2021, 1, 1), individual_emissions=daily_individuals
     )
-    assert summary.estimated_total_co2_kg == 1.1 * 10
-    assert summary.estimated_total_distance_km == 3 * 10
+    assert summary.total_estimate_co2_kg == 1.1 * 10
+    assert summary.total_estimate_distance_km == 3 * 10

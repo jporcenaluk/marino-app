@@ -19,9 +19,9 @@ def average(total: float, count: int) -> float:
     return total / count
 
 
-def faculty_staff_count() -> int:
+def total_population() -> int:
     """
-    Calculate the number of faculty and staff. This is a fixed number, so calculation
+    Calculate the total population (the people at Marino who may use the app). This is a fixed number, so calculation
     can be done ahead of time - saving the computer from doing it.
 
     Estimated 1400 students, 100 staff, approximately 75% of which commute to school
