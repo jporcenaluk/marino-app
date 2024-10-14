@@ -155,6 +155,45 @@ def story_summary():
     except Exception as e:
         return jsonify({"error": e}), 500
 
+@app.route("/api/02-story-questions", methods=["GET"])
+def story_questions():
+    try:
+        db = firestore_client()
+        one_week_ago = dt.datetime.now(tz=timezone.utc) - dt.timedelta(days=7)
+        doc_ref = (
+            db.collection("daily_transport")
+            .where(filter=firestore.FieldFilter("created_utc", ">=", one_week_ago))
+            .stream()
+        )
+
+        daily_individual_responses = [
+            DailyIndividualResponseBase(
+                created_utc=response.get("created_utc"),
+                distance_km=response.get("distance_km"),
+                transport_mode=response.get("transport_mode"),
+            )
+            for response in list(doc_ref)
+            if response.get("distance_km") not in [None, 0] and response.get("transport_mode") not in [None, ""]
+        ]
+        daily_individual_summaries = [
+            DailyIndividual(response) for response in daily_individual_responses
+        ]
+
+        daily_summaries = DailySummaries(daily_individuals=daily_individual_summaries)
+
+        weekly_summary = WeeklySummary(daily_individuals=daily_individual_summaries)
+        print(daily_summaries.daily_summaries)
+        return (
+            jsonify(
+                {
+                    "daily": [asdict(summary) for summary in daily_summaries.daily_summaries],
+                    "weekly": asdict(weekly_summary),
+                }
+            ),
+            200,
+        )
+    except Exception as e:
+        return jsonify({"error": e}), 500
 
 if __name__ == "__main__":
     # port is set in GCP; otherwise use 8080
