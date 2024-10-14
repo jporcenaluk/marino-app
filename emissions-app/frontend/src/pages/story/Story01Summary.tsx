@@ -37,6 +37,10 @@ function Story01Summary() {
     setCurrentStep(1);
   }, [setCurrentStep]);
 
+  const handleBack = () => {
+    navigate('/');
+  };
+
   const handleNext = () => {
     navigate('/story/2');
   };
@@ -59,6 +63,7 @@ function Story01Summary() {
   if (loading) {
     return <div>Loading...</div>;
   }
+
 
   return (
     <div className="p-4 max-w-md mx-auto">
@@ -91,11 +96,16 @@ function Story01Summary() {
       <p>
         If you're still curious, read more to start seeing maths in a new light.
       </p>
-      <div style={{ display: 'none' }}>{JSON.stringify(documents)}</div>
-      <div className="flex justify-end">
-        <button className="btn btn-primary mt-4" onClick={handleNext}>
-          Dive Deeper
-        </button>
+      {/* <div style={{ display: 'none' }}>{JSON.stringify(documents)}</div> */}
+
+      <div className="flex justify-between">
+            <button className="btn btn-secondary mt-4" onClick={handleBack}>
+            Back
+            </button>
+            
+            <button className="btn btn-primary mt-4" onClick={handleNext}>
+            Dive Deeper
+          </button>
       </div>
     </div>
   );

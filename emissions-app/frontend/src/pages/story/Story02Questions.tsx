@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
 import { StoryProgressContext } from '../../contexts/StoryProgressContext';
 import { useNavigate } from 'react-router-dom';
+import bicycle from '../../assets/bicycle.png';
+import broomstick from '../../assets/broomstick.png';
 import './Story02Questions.css';
 import {
     PieChart,
@@ -118,7 +120,13 @@ function Story02Questions() {
                 </PieChart>
             </ResponsiveContainer>
         </div>
-        
+        <section className="grid grid-cols-3 gap-4">
+            <div className="col-span-1 p-4 flex items-center justify-center"><img src={broomstick} alt="Broomsticks are not often used to get to school, but sometimes, maybe" className="w-24 sm:w-32 md:w-48" /></div>
+            <div className="col-span-2 p-4 flex items-center justify-center">Unless you’re riding a broomstick and going to Hogwarts, it’s unlikely you flew to school. But why not fly to school?</div>
+            <div className="col-span-2 p-4 flex items-center justify-center">Maths is a tool that help us think critically and guide us to asking more insightful questions (which then can be explored with, you guessed it, maths).</div>
+            <div className="col-span-1 p-4 flex items-center justify-center"><img src={bicycle} alt="Bicycles are more often used to get to schoole. But why?" className="w-24 sm:w-32 md:w-48" /></div>
+        </section>
+
 
         {/* <div>{JSON.stringify(documents)}</div> */}
         <div className="flex justify-between">
@@ -126,7 +134,7 @@ function Story02Questions() {
             Back
             </button>
             <button className="btn btn-primary mt-4" onClick={handleNext}>
-            Dive Deeper
+            Keep Going
             </button>
         </div>
         </div>
