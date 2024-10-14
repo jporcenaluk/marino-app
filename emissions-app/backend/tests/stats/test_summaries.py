@@ -5,7 +5,7 @@ Test calc summaries
 import datetime as dt
 from unittest.mock import MagicMock, patch
 import pytest
-from src.stats.summaries import WeeklySummary, DailySummary, DailyIndividual
+from src.stats.summaries import WeeklySummary, DailySummary, DailyIndividual, TransportModeSummary, TransportModeSummaries
 
 
 @pytest.fixture
@@ -28,9 +28,9 @@ def daily_individuals():
 
 
 @pytest.fixture(autouse=True)
-def mock_faculty_staff_count():
+def mock_total_population():
     with patch(
-        "src.stats.summaries.faculty_staff_count", return_value=10
+        "src.stats.summaries.total_population", return_value=10
     ) as mock_faculty_staff_count:
         yield mock_faculty_staff_count
 
@@ -57,7 +57,7 @@ def test_weekly_summary_estimates(daily_individuals: list[DailyIndividual]):
 
 def test_daily_summary_totals(daily_individuals: list[DailyIndividual]):
     summary = DailySummary(
-        date=dt.datetime(2021, 1, 1), individual_emissions=daily_individuals
+        date=dt.datetime(2021, 1, 1), daily_individuals=daily_individuals
     )
     assert summary.total_recorded_count == 2
     assert summary.total_recorded_co2_kg == 2.2
@@ -66,7 +66,7 @@ def test_daily_summary_totals(daily_individuals: list[DailyIndividual]):
 
 def test_daily_summary_averages(daily_individuals: list[DailyIndividual]):
     summary = DailySummary(
-        date=dt.date(2021, 1, 1), individual_emissions=daily_individuals
+        date=dt.date(2021, 1, 1), daily_individuals=daily_individuals
     )
     assert summary.avg_co2_kg_per_record == 1.1
     assert summary.avg_distance_km_per_record == 3
@@ -75,7 +75,43 @@ def test_daily_summary_averages(daily_individuals: list[DailyIndividual]):
 
 def test_daily_summary_estimates(daily_individuals: list[DailyIndividual]):
     summary = DailySummary(
-        date=dt.date(2021, 1, 1), individual_emissions=daily_individuals
+        date=dt.date(2021, 1, 1), daily_individuals=daily_individuals
     )
     assert summary.total_estimate_co2_kg == 1.1 * 10
     assert summary.total_estimate_distance_km == 3 * 10
+
+def test_transport_mode_summary_totals(daily_individuals: list[DailyIndividual]):
+    summary = TransportModeSummary(
+        transport_mode="bike", daily_individuals=daily_individuals, total_recorded_count=2
+    )
+    assert summary.total_recorded_count == 2
+    assert summary.total_recorded_co2_kg == 2.2
+    assert summary.total_recorded_distance_km == 6
+    assert summary.percent_of_total_recorded == 1
+
+
+def test_transport_mode_summary_averages(daily_individuals: list[DailyIndividual]):
+    summary = TransportModeSummary(
+        transport_mode="bike", daily_individuals=daily_individuals, total_recorded_count=2
+    )
+    assert summary.avg_co2_kg_per_record == 1.1
+    assert summary.avg_distance_km_per_record == 3
+
+
+def test_transport_mode_summaries(daily_individuals: list[DailyIndividual]):
+    summaries = TransportModeSummaries(daily_individuals=daily_individuals)
+    assert len(summaries.transport_mode_summaries) == 2
+
+    bike_summary = next(
+        summary for summary in summaries.transport_mode_summaries if summary.transport_mode == "bike"
+    )
+    assert bike_summary.total_recorded_count == 1
+    assert bike_summary.total_recorded_co2_kg == 1.0
+    assert bike_summary.total_recorded_distance_km == 3
+
+    tram_or_bus_summary = next(
+        summary for summary in summaries.transport_mode_summaries if summary.transport_mode == "tram_or_bus"
+    )
+    assert tram_or_bus_summary.total_recorded_count == 1
+    assert tram_or_bus_summary.total_recorded_co2_kg == 1.2
+    assert tram_or_bus_summary.total_recorded_distance_km == 3

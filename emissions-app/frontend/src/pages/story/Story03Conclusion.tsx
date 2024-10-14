@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 
-function Story02Next() {
+function Story03Conclusion() {
     const context = useContext(StoryProgressContext);
     const navigate = useNavigate();
 
@@ -16,11 +16,11 @@ function Story02Next() {
     const { setCurrentStep } = context;
 
     useEffect(() => {
-        setCurrentStep(2);
+        setCurrentStep(3);
     }, [setCurrentStep]);
 
     const handleBack = () => {
-        navigate('/story/1');
+        navigate('/story/2');
     };
 
   return (
@@ -57,4 +57,4 @@ function Story02Next() {
   );
 }
 
-export default Story02Next;
+export default Story03Conclusion;

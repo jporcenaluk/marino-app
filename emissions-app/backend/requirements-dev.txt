@@ -1,7 +1,7 @@
 -r requirements.txt
 
 pytest==8.*
-watchdog==3.0.0
-debugpy==1.8.6
+watchdog==5.0.3
+debugpy==1.8.7
 pylint
 black

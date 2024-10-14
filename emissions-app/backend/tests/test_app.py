@@ -63,7 +63,7 @@ def test_transport_invalid_recaptcha(mock_requests_post, client):
     assert response.json == {"error": "Invalid reCAPTCHA. Please try again."}
 
 def test_visualisation_success(client):
-    response = client.get("/api/visualisation")
+    response = client.get("/api/01-story-summary")
 
     assert response.status_code == 200
     assert "daily" in response.json

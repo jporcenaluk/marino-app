@@ -104,3 +104,66 @@ class WeeklySummary(SummaryBase):
         min_date = min(emissions.created_utc for emissions in daily_individuals)
         if (max_date - min_date).days > 7:
             raise LongerThanWeekException
+
+@dataclass
+class TransportModeSummary:
+    """
+    Transport mode summary
+
+    :param transport_mode: str
+    :param daily_individuals: list of DailyIndividual
+    :param total_recorded_count: int
+    """
+
+    transport_mode: str
+    transport_mode_friendly: str
+    total_recorded_count: int
+    total_recorded_co2_kg: float
+    total_recorded_distance_km: float
+    percent_of_total_recorded: float
+
+    # averages recorded
+    avg_co2_kg_per_record: float
+    avg_distance_km_per_record: float
+
+    def __init__(self, transport_mode: str, daily_individuals: list[DailyIndividual], total_recorded_count: int):
+        self.transport_mode = transport_mode
+        self.transport_mode_friendly = daily_individuals[0].transport_mode_friendly
+        self.percent_of_total_recorded = len(daily_individuals) / total_recorded_count
+        self.total_recorded_count = len(daily_individuals)
+        self.total_recorded_co2_kg = sum(
+            emissions.co2_kg for emissions in daily_individuals
+        )
+        self.total_recorded_distance_km = sum(
+            emissions.distance_km for emissions in daily_individuals
+        )
+        self.avg_co2_kg_per_record = average(
+            self.total_recorded_co2_kg, self.total_recorded_count
+        )
+        self.avg_distance_km_per_record = average(
+            self.total_recorded_distance_km, self.total_recorded_count
+        )
+
+@dataclass
+class TransportModeSummaries:
+    """
+    Transport mode summaries
+
+    :param daily_individuals: list of DailyIndividual
+    """
+
+    transport_mode_summaries: list[TransportModeSummary]
+
+    def __init__(self, daily_individuals: list[DailyIndividual]):
+        grouped_by_transport_mode = {}
+        recorded_count = len(daily_individuals)
+        for individual in daily_individuals:
+            transport_mode = individual.transport_mode
+            if transport_mode not in grouped_by_transport_mode:
+                grouped_by_transport_mode[transport_mode] = []
+            grouped_by_transport_mode[transport_mode].append(individual)
+
+        self.transport_mode_summaries = [
+            TransportModeSummary(transport_mode=transport_mode, daily_individuals=daily_individuals, total_recorded_count=recorded_count)
+            for transport_mode, daily_individuals in grouped_by_transport_mode.items()
+        ]

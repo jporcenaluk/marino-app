@@ -72,13 +72,13 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
 
       <div className="mb-4">
         <div className="flex justify-between">
-          <label htmlFor="distance" className="block text-md text-gray-700 mb-2 dark:text-white">Distance (km)</label>
-          <p className="text-md text-gray-700 dark:text-white">{distanceKm} km</p>
+          <label htmlFor="distance" className="block text-md text-white mb-2">Distance (km)</label>
+          <p className="text-md text-white">{distanceKm} km</p>
         </div>
         <input id="distance" required type="range" min="1" max="100" value={distanceKm} className="range range-lg" onChange={handleDistanceChange} />
 
       </div>
-      <div className="mb-8 text-xs text-gray-900 dark:text-gray-400">
+      <div className="mb-8 text-xs text-gray-500">
         This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.
       </div>
       <div className="flex justify-end">

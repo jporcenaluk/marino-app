@@ -15,7 +15,7 @@ from models.daily_individual_response import (
     DailyIndividualResponseBase,
 )
 from stats.daily_individual import DailyIndividual
-from stats.summaries import DailySummaries, WeeklySummary
+from stats.summaries import DailySummaries, WeeklySummary, TransportModeSummaries
 from recaptcha.recaptcha import recaptcha_secret
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
@@ -155,8 +155,43 @@ def story_summary():
     except Exception as e:
         return jsonify({"error": e}), 500
 
+@app.route("/api/02-story-questions", methods=["GET"])
+def story_questions():
+    try:
+        db = firestore_client()
+        one_week_ago = dt.datetime.now(tz=timezone.utc) - dt.timedelta(days=7)
+        doc_ref = (
+            db.collection("daily_transport")
+            .where(filter=firestore.FieldFilter("created_utc", ">=", one_week_ago))
+            .stream()
+        )
+
+        daily_individual_responses = [
+            DailyIndividualResponseBase(
+                created_utc=response.get("created_utc"),
+                distance_km=response.get("distance_km"),
+                transport_mode=response.get("transport_mode"),
+            )
+            for response in list(doc_ref)
+            if response.get("distance_km") not in [None, 0] and response.get("transport_mode") not in [None, ""]
+        ]
+        daily_individual_summaries = [
+            DailyIndividual(response) for response in daily_individual_responses
+        ]
+
+        tranport_summaries = TransportModeSummaries(daily_individuals=daily_individual_summaries)
+        return (
+            jsonify(
+                {
+                    "transport_mode_summaries": [asdict(summary) for summary in tranport_summaries.transport_mode_summaries]
+                }
+            ),
+            200,
+        )
+    except Exception as e:
+        return jsonify({"error": e}), 500
 
 if __name__ == "__main__":
     # port is set in GCP; otherwise use 8080
     port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, use_reloader=True, reloader_type="stat")
