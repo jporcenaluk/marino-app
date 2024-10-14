@@ -15,7 +15,7 @@ from models.daily_individual_response import (
     DailyIndividualResponseBase,
 )
 from stats.daily_individual import DailyIndividual
-from stats.summaries import DailySummaries, WeeklySummary
+from stats.summaries import DailySummaries, WeeklySummary, TransportModeSummaries
 from recaptcha.recaptcha import recaptcha_secret
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
@@ -179,15 +179,11 @@ def story_questions():
             DailyIndividual(response) for response in daily_individual_responses
         ]
 
-        daily_summaries = DailySummaries(daily_individuals=daily_individual_summaries)
-
-        weekly_summary = WeeklySummary(daily_individuals=daily_individual_summaries)
-        print(daily_summaries.daily_summaries)
+        tranport_summaries = TransportModeSummaries(daily_individuals=daily_individual_summaries)
         return (
             jsonify(
                 {
-                    "daily": [asdict(summary) for summary in daily_summaries.daily_summaries],
-                    "weekly": asdict(weekly_summary),
+                    "transport_mode_summaries": [asdict(summary) for summary in tranport_summaries.transport_mode_summaries]
                 }
             ),
             200,
@@ -198,4 +194,4 @@ def story_questions():
 if __name__ == "__main__":
     # port is set in GCP; otherwise use 8080
     port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, use_reloader=True, reloader_type="stat")

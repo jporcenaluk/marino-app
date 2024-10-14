@@ -21,9 +21,8 @@ class DailyIndividual(DailyIndividualResponseBase):
             daily_individual_response.transport_mode
         )
         self.transport_mode_friendly = transport_mode.friendly_name
-        self.co2_kg_per_distance_km = (
-            transport_mode.co2_grams_per_km / 1000
-        ) / self.distance_km
         self.co2_kg = individual_co2_kg(
             transport_mode=transport_mode, distance_km=self.distance_km
         )
+        self.co2_kg_per_distance_km = self.co2_kg / self.distance_km
+

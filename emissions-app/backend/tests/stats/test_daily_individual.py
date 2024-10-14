@@ -21,8 +21,9 @@ def test_daily_individual_init(daily_individual_response, transport_mode):
     daily_individual = DailyIndividual(daily_individual_response)
 
     assert daily_individual.created_utc == daily_individual_response.created_utc
-    assert daily_individual.distance_km == daily_individual_response.distance_km
+    # distance_km is doubled to account for the fact that the individual is making a round trip
+    assert daily_individual.distance_km == daily_individual_response.distance_km * 2
     assert daily_individual.transport_mode == daily_individual_response.transport_mode
     assert daily_individual.transport_mode_friendly == transport_mode.friendly_name
-    assert daily_individual.co2_kg_per_distance_km == transport_mode.co2_grams_per_km / 1000 / daily_individual_response.distance_km
-    assert daily_individual.co2_kg == 0.25
+    # double the distance, double the CO2
+    assert daily_individual.co2_kg == 0.50

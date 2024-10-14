@@ -11,6 +11,8 @@ services:
     environment:
       - FLASK_ENV=development
       - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+      - FLASK_RUN_RELOADER_TYPE=watchdog
       - PYTHONBUFFERED=1
       - GOOGLE_APPLICATION_CREDENTIALS=/keys/marino-emissions-app.json
   frontend:

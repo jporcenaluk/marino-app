@@ -1,23 +1,20 @@
 import { useEffect, useState, useContext } from 'react';
 import { StoryProgressContext } from '../../contexts/StoryProgressContext';
-import beachBallImage from '../../assets/beach-ball-measure.png';
 import { useNavigate } from 'react-router-dom';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface RecordData {
-  avg_co2_kg_per_record: number;
-  avg_co2_kg_per_record_per_distance_km: number;
-  avg_distance_km_per_record: number;
-  date?: string; // Optional because it's not in the weekly object
-  total_estimate_co2_kg: number;
-  total_estimate_distance_km: number;
-  total_recorded_co2_kg: number;
+  transport_mode: string;
   total_recorded_count: number;
+  total_recorded_co2_kg: number;
   total_recorded_distance_km: number;
+  avg_co2_kg_per_record: number;
+  avg_distance_km_per_record: number;
+  percent_of_total_recorded: number;
 }
 
 interface Document {
-  daily: RecordData[];
-  weekly: Omit<RecordData, 'date'>; // weekly object doesn't contain a 'date'
+  transport_mode_summaries: RecordData[];
 }
 
 function Story02Questions() {
@@ -63,41 +60,38 @@ function Story02Questions() {
     return <div>Loading...</div>;
   }
 
+  // Example data for the stacked chart
+  // Transform the transport_mode_summaries data for the stacked chart
+  const data = documents?.transport_mode_summaries.map((record) => ({
+    name: record.transport_mode,
+    percentOfTotalRecorded: record.percent_of_total_recorded
+  })) || [];
+  const colors = ["#8884d8", "#82ca9d", "#aaa", "#ff7300", "#413ea0", "#ffbb28", "#ff8042", "#00c49f", "#0088fe", "#ff00ff"];
+
+  const renderBars = (data: any) => {
+    const keys = Object.keys(data[0]).filter(key => key !== 'name');
+    return keys.map((key, index) => (
+      <Bar key={key} dataKey={key} stackId="a" fill={colors[index % colors.length]} />
+    ));
+  };
+  
   return (
     <div className="p-4 max-w-md mx-auto">
       <section className="mb-10">
-        <h2 className="text-md font-extrabold">Marino Students & Staff</h2>
-        <p className="text-xs mb-2">Estimated Commuting Stats For Maths Week</p>
-        <div className="flex justify-between">
-          <div className="text-left">
-            <p className="text-4xl font-extrabold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
-            <p className="stat-label">co<sub>2</sub> emissions</p>
-          </div>
-
-          <div className="text-right">
-            <p className="text-4xl font-extrabold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
-            <p className="stat-label">distance travelled</p>
-          </div>
-        </div>
+        <h3 className="text-3xl mb-4">Maths holds the <span className="font-bold">answers</span>.</h3>
+        <h3 className="text-3xl mb-4">What are your <span className="font-bold">questions?</span></h3>
       </section>
-      <section className="mb-6">
-        <h3 className="text-3xl mb-4">Maths is about <span className="font-bold">curiosity</span>.</h3>
-        <p>What do you <span className="font-bold">notice</span>? What do you <span className="font-bold">wonder</span>? Maths is driven by curiosity about the world. When given summary statistics like this, you might have all sorts of questions. For example, which is the most efficient form of transportation?</p>
-      </section>
-      <section className="mb-6">
-        <h3 className="text-xl">Or, wait, how much CO2 <span className="font-bold">is</span> a kilogram?</h3>
-        <span className="text-xs">(It's about as much as fits in a beach ball)</span>
-        <div className="flex justify-end">
-          <img src={beachBallImage} alt="Beach ball representing 1 kg of CO2" className="w-24 sm:w-32 md:w-48" />
-        </div>
-      </section>
-      <p>
-        If you're still curious, read more to start seeing maths in a new light.
-      </p>
-      <div style={{ display: 'none' }}>{JSON.stringify(documents)}</div>
-      <div className="flex">
-
-    </div>
+      <ResponsiveContainer width="100%">
+        <BarChart data={data} layout="vertical">
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis type="number" domain={[0, 100]} />
+          <YAxis type="category" dataKey="name" />
+          <Tooltip />
+          <Legend />
+          {renderBars(data)}
+        </BarChart>
+      </ResponsiveContainer>
+      <div>{JSON.stringify(documents)}</div>
       <div className="flex justify-between">
         <button className="btn btn-secondary mt-4" onClick={handleBack}>
           Back
