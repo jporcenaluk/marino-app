@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { StoryProgressContext } from '../../contexts/StoryProgressContext';
+import beachBallImage from '../../assets/beach-ball-measure.png';
 import { useNavigate } from 'react-router-dom';
 import './Story01Summary.css';
 
@@ -61,17 +62,17 @@ function Story01Summary() {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <section className="mb-8">
-        <h2 className="text-md font-bold">Marino Students & Staff</h2>
-        <p className="text-xs mb-4">Estimated Commuting Emissions Stats For This Week</p>
+      <section className="mb-10">
+        <h2 className="text-md font-extrabold">Marino Students & Staff</h2>
+        <p className="text-xs mb-2">Estimated Commuting Stats For Maths Week</p>
         <div className="flex justify-between">
           <div className="text-left">
-            <p className="text-3xl font-bold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
+            <p className="text-4xl font-extrabold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
             <p className="stat-label">co<sub>2</sub> emissions</p>
           </div>
 
           <div className="text-right">
-            <p className="text-3xl font-bold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
+            <p className="text-4xl font-extrabold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
             <p className="stat-label">distance travelled</p>
           </div>
         </div>
@@ -84,7 +85,7 @@ function Story01Summary() {
         <h3 className="text-xl">Or, wait, how much CO2 <span className="font-bold">is</span> a kilogram?</h3>
         <span className="text-xs">(It's about as much as fits in a beach ball)</span>
         <div className="flex justify-end">
-          <img src="/beach-ball-measure.png" alt="Beach ball representing 1 kg of CO2" className="w-24 sm:w-32 md:w-48" />
+          <img src={beachBallImage} alt="Beach ball representing 1 kg of CO2" className="w-24 sm:w-32 md:w-48" />
         </div>
       </section>
       <p>

@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-customBlue text-customWhite">
         <Header />
         <main className="flex-grow p-4">
             <Outlet />

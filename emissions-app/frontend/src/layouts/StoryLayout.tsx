@@ -6,7 +6,7 @@ import { StoryProgressProvider } from '../contexts/StoryProgressContext';
 
 const StoryLayout = () => (
   <StoryProgressProvider currentStep={1} totalSteps={2} setCurrentStep={() => {}}>
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-customBlue text-customWhite">
         <Header />
         <main className="flex-grow p-4 max-w-3xl mx-auto">
           <Outlet />

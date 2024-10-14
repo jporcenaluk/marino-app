@@ -3,7 +3,7 @@ import MainLayout from './layouts/MainLayout';
 import StoryLayout from './layouts/StoryLayout';
 import HomePage from './pages/HomePage';
 import Story01Summary from './pages/story/Story01Summary'
-import Story02Next from './pages/story/Story02Next'
+import Story02Next from './pages/story/Story02Conclusion'
 import React from 'react';
 
 const AppRoutes = () => {
