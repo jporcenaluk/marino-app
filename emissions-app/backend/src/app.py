@@ -75,9 +75,18 @@ def transport():
 
         # Extract the required fields from the JSON payload
         user_id = data.get("user_id")
+        if not user_id:
+            return jsonify({"error": "Missing user_id"}), 400
+        
         distance_km = data.get("distance_km")
-        tz_identifier = data.get("tz_identifier")
+        if not distance_km:
+            return jsonify({"error": "Missing distance_km"}), 400
+
         transport_mode = data.get("transport_mode")
+        if not transport_mode:
+            return jsonify({"error": "Missing transport_mode"}), 400
+        
+        tz_identifier = data.get("tz_identifier")
 
         # Generate file info
         now_utc = dt.datetime.now(tz=timezone.utc)
@@ -114,9 +123,6 @@ def story_summary():
         doc_ref = (
             db.collection("daily_transport")
             .where(filter=firestore.FieldFilter("created_utc", ">=", one_week_ago))
-            .where(filter=firestore.FieldFilter("distance_km", "!=", None))
-            .where(filter=firestore.FieldFilter("transport_mode", "!=", None))
-            .where(filter=firestore.FieldFilter("distance_km", "!=", 0))
             .stream()
         )
 
@@ -127,6 +133,7 @@ def story_summary():
                 transport_mode=response.get("transport_mode"),
             )
             for response in list(doc_ref)
+            if response.get("distance_km") not in [None, 0] and response.get("transport_mode") not in [None, ""]
         ]
         daily_individual_summaries = [
             DailyIndividual(response) for response in daily_individual_responses

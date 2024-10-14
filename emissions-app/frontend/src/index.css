@@ -8,3 +8,7 @@
 .grecaptcha-badge { 
     visibility: hidden; 
 }
+
+.btn-primary::after {
+    content: " >>";
+}

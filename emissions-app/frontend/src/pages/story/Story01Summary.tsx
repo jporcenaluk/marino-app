@@ -8,8 +8,8 @@ interface RecordData {
   avg_co2_kg_per_record_per_distance_km: number;
   avg_distance_km_per_record: number;
   date?: string; // Optional because it's not in the weekly object
-  estimated_total_co2_kg: number;
-  estimated_total_distance_km: number;
+  total_estimate_co2_kg: number;
+  total_estimate_distance_km: number;
   total_recorded_co2_kg: number;
   total_recorded_count: number;
   total_recorded_distance_km: number;
@@ -60,33 +60,40 @@ function Story01Summary() {
   }
 
   return (
-    <div>
-      <section>
-        <h2>Marino Students & Staff</h2>
-        <p>Estimated Commuting Emissions This Week</p>
-        <div className="grid">
-          <div className="p-4">
-            <p>{Math.round(documents?.weekly.estimated_total_co2_kg ?? 0).toLocaleString()}</p>
-            <p className="stat-label">kg CO2</p>
+    <div className="p-4 max-w-md mx-auto">
+      <section className="mb-8">
+        <h2 className="text-md font-bold">Marino Students & Staff</h2>
+        <p className="text-xs mb-4">Estimated Commuting Emissions Stats For This Week</p>
+        <div className="flex justify-between">
+          <div className="text-left">
+            <p className="text-3xl font-bold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
+            <p className="stat-label">co<sub>2</sub> emissions</p>
           </div>
 
-          <div className="p-4">
-            <p>{Math.round(documents?.weekly.estimated_total_distance_km ?? 0).toLocaleString()}</p>
-            <p className="stat-label">km</p>
+          <div className="text-right">
+            <p className="text-3xl font-bold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
+            <p className="stat-label">distance travelled</p>
           </div>
         </div>
       </section>
-      <section className="visualisation-content">
-        <h3>Maths is about <span className="highlight">curiosity</span>.</h3>
-        <p>What do you notice? What do you wonder? Maths is driven by curiosity about the world. When given summary statistics like this, you might have all sorts of questions. For example, which is the most efficient form of transportation?</p>
-        <h4>Or, wait, how much CO2 <span className="highlight">is</span> a kilogram?</h4>
-        <p>(It's about as much as fits in a beach ball)</p>
-        <img src="/assets/beach_ball.png" alt="Beach ball representing 1 kg of CO2" className="beach-ball-image" />
+      <section className="mb-6">
+        <h3 className="text-3xl mb-4">Maths is about <span className="font-bold">curiosity</span>.</h3>
+        <p>What do you <span className="font-bold">notice</span>? What do you <span className="font-bold">wonder</span>? Maths is driven by curiosity about the world. When given summary statistics like this, you might have all sorts of questions. For example, which is the most efficient form of transportation?</p>
       </section>
+      <section className="mb-6">
+        <h3 className="text-xl">Or, wait, how much CO2 <span className="font-bold">is</span> a kilogram?</h3>
+        <span className="text-xs">(It's about as much as fits in a beach ball)</span>
+        <div className="flex justify-end">
+          <img src="/beach-ball-measure.png" alt="Beach ball representing 1 kg of CO2" className="w-24 sm:w-32 md:w-48" />
+        </div>
+      </section>
+      <p>
+        If you're still curious, read more to start seeing maths in a new light.
+      </p>
       <div style={{ display: 'none' }}>{JSON.stringify(documents)}</div>
       <div className="flex justify-end">
         <button className="btn btn-primary mt-4" onClick={handleNext}>
-          Next
+          Dive Deeper
         </button>
       </div>
     </div>

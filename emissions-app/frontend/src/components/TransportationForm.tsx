@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import "./TransportationForm.css";
 
 interface TransportationFormProps {
@@ -14,6 +14,7 @@ interface FormData {
 const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
   const [transportMode, setTransportMode] = useState<string>('');
   const [distanceKm, setDistanceKm] = useState<number>(0);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
   const handleTransportModeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setTransportMode(event.target.value);
@@ -22,6 +23,11 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
   const handleDistanceChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDistanceKm(Number(event.target.value));
   };
+
+  useEffect(() => {
+    const isValid = transportMode !== '' && distanceKm > 0;
+    setIsFormValid(isValid);
+  }, [transportMode, distanceKm]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,8 +55,10 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
         <select
           id="transportation-mode"
           value={transportMode}
+          required
           onChange={handleTransportModeChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="" disabled selected>Choose...</option>
             <option value="bike">Bike</option>
             <option value="car_electric">Car (Electric)</option>
             <option value="car_petrol_or_diesel">Car (Petrol or Diesel)</option>
@@ -67,14 +75,24 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
           <label htmlFor="distance" className="block text-md text-gray-700 mb-2 dark:text-white">Distance (km)</label>
           <p className="text-md text-gray-700 dark:text-white">{distanceKm} km</p>
         </div>
-        <input id="distance" type="range" min="1" max="100" value={distanceKm} className="range range-lg" onChange={handleDistanceChange} />
+        <input id="distance" required type="range" min="1" max="100" value={distanceKm} className="range range-lg" onChange={handleDistanceChange} />
 
       </div>
       <div className="mb-8 text-xs text-gray-900 dark:text-gray-400">
         This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.
       </div>
       <div className="flex justify-end">
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Maths It Up!</button>
+        <button 
+          type="submit" 
+          className={
+            `py-2 px-4 rounded font-bold ${
+              isFormValid ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-gray-300 text-gray-500'
+            }`
+          }
+          disabled={!isFormValid}
+          >
+            Maths It Up!
+          </button>
       </div>
     </form>
 
