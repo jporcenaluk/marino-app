@@ -62,17 +62,17 @@ function Story01Summary() {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <section className="mb-8">
-        <h2 className="text-md font-bold">Marino Students & Staff</h2>
-        <p className="text-xs mb-4">Estimated Commuting Emissions Stats For This Week</p>
+      <section className="mb-10">
+        <h2 className="text-md font-extrabold">Marino Students & Staff</h2>
+        <p className="text-xs mb-2">Estimated Commuting Stats For Maths Week</p>
         <div className="flex justify-between">
           <div className="text-left">
-            <p className="text-3xl font-bold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
+            <p className="text-4xl font-extrabold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
             <p className="stat-label">co<sub>2</sub> emissions</p>
           </div>
 
           <div className="text-right">
-            <p className="text-3xl font-bold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
+            <p className="text-4xl font-extrabold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
             <p className="stat-label">distance travelled</p>
           </div>
         </div>

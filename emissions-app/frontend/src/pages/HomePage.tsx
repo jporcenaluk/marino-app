@@ -56,7 +56,7 @@ function HomePage() {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h2 className="mb-6 text-2xl font-bold">Welcome to Maths Week 2024!</h2>
+      <h2 className="mb-6 text-2xl font-extrabold">Welcome to Maths Week 2024!</h2>
       <div className="mb-8">
         <p className="mb-3">This week at Marino, we are exploring how maths can help us better understand the world around us, with a focus on how we get to campus each day.</p>
         <p className="mb-3">You <i>may</i> be amazed at what maths exploration can be driven by just two questions.</p>

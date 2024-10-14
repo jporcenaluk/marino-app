@@ -85,8 +85,8 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
         <button 
           type="submit" 
           className={
-            `py-2 px-4 rounded font-bold ${
-              isFormValid ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-gray-300 text-gray-500'
+            `${
+              isFormValid ? 'btn btn-primary' : 'btn btn-primary bg-gray-300 text-gray-500'
             }`
           }
           disabled={!isFormValid}
