@@ -19,6 +19,10 @@ function HomePage() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 
+  const handleNext = () => {
+    navigate('/story/1');
+  };
+
   const handleFormSubmit = async (formData: any) => {
     // Get Metadata
     const tzIdentifier = getTzIdentifier();
@@ -63,6 +67,9 @@ function HomePage() {
         <p className="mb-3">Curious? Simply share your <b>primary mode of transport</b> and <b>how far you travelled</b> to campus today to find out more!</p>
       </div>
       <TransportationForm onSubmit={handleFormSubmit}/>
+      <div className="flex justify-end mt-8">
+        <button className="text-xs text-yellow-500 underline" onClick={handleNext}>I can't wait, take me straight to the data!</button>
+      </div>
     </div>
   );
 }
