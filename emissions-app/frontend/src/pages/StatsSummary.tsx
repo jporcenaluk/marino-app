@@ -45,14 +45,18 @@ function StatsSummary() {
 
   }, []);
 
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="p-4 mx-auto h-full">
-      {loading ? <p>Loading...</p> : <p>Documents loaded</p>}
       <section className="mb-10 flex flex-col justify-between h-full">
         <div className="flex flex-col items-center">
           <h1 className="text-4xl font-extrabold">Marino Students & Staff</h1>
           <p className="text-lg mb-2">Estimated Commuting Stats For Maths Week</p>
-          <div className="flex h-full mt-10 ">
+          <div className="flex h-full mt-10 mb-10">
               <div className="text-left flex-grow p-5">
                   <p className="text-6xl font-extrabold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
                   <p className="stat-label">co<sub>2</sub> emissions</p>
@@ -62,6 +66,9 @@ function StatsSummary() {
                   <p className="text-6xl font-extrabold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
                   <p className="stat-label">distance travelled</p>
               </div>
+          </div>
+          <div className="flex max-w-3xl w-full text-left text-lg border-b-2">
+            Recorded Stats
           </div>
           <div className="grid grid-cols-3 gap-4 w-full max-w-3xl p-4">
             <div className="col-span-1 text-center">{documents?.weekly.total_recorded_count.toLocaleString() || 0} responses recorded</div>
