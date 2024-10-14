@@ -116,6 +116,7 @@ class TransportModeSummary:
     """
 
     transport_mode: str
+    transport_mode_friendly: str
     total_recorded_count: int
     total_recorded_co2_kg: float
     total_recorded_distance_km: float
@@ -127,6 +128,7 @@ class TransportModeSummary:
 
     def __init__(self, transport_mode: str, daily_individuals: list[DailyIndividual], total_recorded_count: int):
         self.transport_mode = transport_mode
+        self.transport_mode_friendly = daily_individuals[0].transport_mode_friendly
         self.percent_of_total_recorded = len(daily_individuals) / total_recorded_count
         self.total_recorded_count = len(daily_individuals)
         self.total_recorded_co2_kg = sum(
