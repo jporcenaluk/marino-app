@@ -78,7 +78,7 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
         <input id="distance" required type="range" min="1" max="100" value={distanceKm} className="range range-lg" onChange={handleDistanceChange} />
 
       </div>
-      <div className="mb-8 text-xs text-gray-900">
+      <div className="mb-8 text-xs text-gray-500">
         This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.
       </div>
       <div className="flex justify-end">
