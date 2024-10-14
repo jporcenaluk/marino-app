@@ -19,7 +19,7 @@ from stats.summaries import DailySummaries, WeeklySummary
 from recaptcha.recaptcha import recaptcha_secret
 
 STATIC_FOLDER = os.environ.get("STATIC_FOLDER", "static")
-FLASK_ENV = os.environ.get("FLASK_ENV", "prod")
+FLASK_ENV = os.environ.get("FLASK_ENV", "production")
 GCP_PROJECT = "marino-emissions-app"
 app = Flask(__name__, static_folder=STATIC_FOLDER)
 
@@ -32,15 +32,16 @@ def firestore_client():
         FIRESTORE_CLIENT = firestore.Client(project=GCP_PROJECT, database="marino-emissions-app")
     return FIRESTORE_CLIENT
 
-# Serve React App
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
 def serve_react_app(path):
-    if path.startswith('api'):
-        # Let the API routes be handled elsewhere
+    if path != "" and path.startswith("api"):
         return "API not found", 404
-    else:
+    if FLASK_ENV == 'production':
         return app.send_static_file('index.html')
+    else:
+        # In development, the frontend is served by Vite on port 3000
+        return jsonify({"message": "Frontend running in development mode"}), 200
 
 
 @app.route("/api/transport", methods=["POST"])
@@ -74,9 +75,18 @@ def transport():
 
         # Extract the required fields from the JSON payload
         user_id = data.get("user_id")
+        if not user_id:
+            return jsonify({"error": "Missing user_id"}), 400
+        
         distance_km = data.get("distance_km")
-        tz_identifier = data.get("tz_identifier")
+        if not distance_km:
+            return jsonify({"error": "Missing distance_km"}), 400
+
         transport_mode = data.get("transport_mode")
+        if not transport_mode:
+            return jsonify({"error": "Missing transport_mode"}), 400
+        
+        tz_identifier = data.get("tz_identifier")
 
         # Generate file info
         now_utc = dt.datetime.now(tz=timezone.utc)
@@ -105,8 +115,8 @@ def transport():
         return jsonify({"status": "error", "exception": e}), 500
 
 
-@app.route("/api/visualisation", methods=["GET"])
-def visualisation():
+@app.route("/api/01-story-summary", methods=["GET"])
+def story_summary():
     try:
         db = firestore_client()
         one_week_ago = dt.datetime.now(tz=timezone.utc) - dt.timedelta(days=7)
@@ -123,6 +133,7 @@ def visualisation():
                 transport_mode=response.get("transport_mode"),
             )
             for response in list(doc_ref)
+            if response.get("distance_km") not in [None, 0] and response.get("transport_mode") not in [None, ""]
         ]
         daily_individual_summaries = [
             DailyIndividual(response) for response in daily_individual_responses

@@ -14,6 +14,9 @@ class DailyIndividual(DailyIndividualResponseBase):
     def __init__(self, daily_individual_response: DailyIndividualResponseBase):
         super().__init__(daily_individual_response.created_utc, daily_individual_response.distance_km, daily_individual_response.transport_mode)
     
+        # It is assumed that the distance is a round trip and the individual
+        # entered the distance for a one-way trip.
+        self.distance_km = daily_individual_response.distance_km * 2
         transport_mode = TransportModes.get_by_id(
             daily_individual_response.transport_mode
         )
