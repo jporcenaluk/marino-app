@@ -60,9 +60,9 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
           className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="" disabled>Choose...</option>
             <option value="bike">Bike</option>
-            <option value="car_electric">Car (Electric)</option>
-            <option value="car_petrol_or_diesel">Car (Petrol or Diesel)</option>
-            <option value="car_plugin_hybrid">Car (Plugin Hybrid)</option>
+            <option value="car_petrol_or_diesel">Petrol/Diesel Car</option>
+            <option value="car_plugin_hybrid">Plugin Hybrid Car</option>
+            <option value="car_electric">Electric Car</option>
             <option value="motorbike">Motorbike</option>
             <option value="train">Train</option>
             <option value="tram_or_bus">Tram or Bus</option>
@@ -94,6 +94,7 @@ const TransportationForm = ({ onSubmit }: TransportationFormProps) => {
             Maths It Up!
           </button>
       </div>
+
     </form>
 
   );
