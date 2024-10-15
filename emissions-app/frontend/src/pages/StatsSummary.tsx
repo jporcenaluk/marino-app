@@ -52,8 +52,8 @@ function StatsSummary() {
 
   return (
     <div className="p-4 mx-auto h-full">
-      <section className="mb-10 flex flex-col justify-between h-full">
-        <div className="flex flex-col items-center">
+      <section className="mb-2 flex flex-col justify-between h-full">
+        <div className="flex flex-col items-center mb-4">
           <h1 className="text-4xl font-extrabold">Marino Students & Staff</h1>
           <p className="text-lg mb-2">Estimated Commuting Stats For Maths Week</p>
           <div className="flex h-full mt-10 mb-10">
@@ -76,9 +76,11 @@ function StatsSummary() {
             <div className="col-span-1 text-center">{documents?.weekly.avg_distance_km_per_record.toFixed(2).toLocaleString() || 0} km avg. per commute</div>
           </div>
         </div>
-        <div className="flex justify-end mt-auto">
-          <div>
-            <img src={qrCode} alt="QR Code" className="w-12 sm:w-18 md:w-32" />            
+        <div className="flex justify-between items-end w-full">
+          <a href="https://marinomaths.com" className="self-end text-4xl">Visit MarinoMaths.com</a>
+          <div className="text-center">
+            <p className="mb-2">scan the QR code</p>
+            <img src={qrCode} alt="QR Code" className="w-12 sm:w-18 md:w-32" />
           </div>
         </div>
 

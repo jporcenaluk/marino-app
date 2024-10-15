@@ -26,6 +26,7 @@ function Story01Summary() {
   const [loading, setLoading] = useState(true);
   const context = useContext(StoryProgressContext);
   const navigate = useNavigate();
+  const currentStep = 1
 
   if (!context) {
     throw new Error('Story01Summary must be used within a StoryProgressProvider');
@@ -34,7 +35,7 @@ function Story01Summary() {
   const { setCurrentStep } = context;
 
   useEffect(() => {
-    setCurrentStep(1);
+    setCurrentStep(currentStep);
   }, [setCurrentStep]);
 
   const handleBack = () => {
@@ -42,7 +43,7 @@ function Story01Summary() {
   };
 
   const handleNext = () => {
-    navigate('/story/2');
+    navigate(`/story/${currentStep + 1}`);
   };
 
   useEffect(() => {
@@ -99,13 +100,13 @@ function Story01Summary() {
       {/* <div style={{ display: 'none' }}>{JSON.stringify(documents)}</div> */}
 
       <div className="flex justify-between">
-            <button className="btn btn-secondary mt-4" onClick={handleBack}>
-            Back
-            </button>
-            
-            <button className="btn btn-primary mt-4" onClick={handleNext}>
-            Dive Deeper
-          </button>
+        <button className="btn btn-secondary mt-4" onClick={handleBack}>
+          Back
+        </button>
+
+        <button className="btn btn-primary mt-4" onClick={handleNext}>
+          Dive Deeper
+        </button>
       </div>
     </div>
   );
