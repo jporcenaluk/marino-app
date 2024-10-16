@@ -24,7 +24,7 @@ class TransportModes:
         ),
         TransportMode(
             id="car_petrol_or_diesel",
-            friendly_name="Car (Petrol or Diesel)",
+            friendly_name="Car (Petrol/Diesel)",
             co2_grams_per_km=171,
         ),
         TransportMode(
@@ -35,7 +35,7 @@ class TransportModes:
         TransportMode(id="motorbike", friendly_name="Motorbike", co2_grams_per_km=114),
         TransportMode(id="train", friendly_name="Train", co2_grams_per_km=35),
         TransportMode(
-            id="tram_or_bus", friendly_name="Tram or Bus", co2_grams_per_km=29
+            id="tram_or_bus", friendly_name="Tram/Bus", co2_grams_per_km=29
         ),
         TransportMode(id="walk", friendly_name="Walk", co2_grams_per_km=22),
     ]
