@@ -100,6 +100,7 @@ class WeeklySummary(SummaryBase):
     total_estimate_distance_km_lower_bound: float
     total_estimate_distance_km_upper_bound: float
     total_estimate_distance_km_margin_of_error: float
+    confidence_level: int
 
     def __init__(self, daily_individuals: list[DailyIndividual]):
         super().__init__(daily_individuals)
@@ -117,6 +118,8 @@ class WeeklySummary(SummaryBase):
         self.total_estimate_distance_km_lower_bound = ci_distance_km.lower_bound_population
         self.total_estimate_distance_km_upper_bound = ci_distance_km.upper_bound_population
         self.total_estimate_distance_km_margin_of_error = ci_distance_km.margin_of_error_population
+        # one of the confidence levels, they are all the same
+        self.confidence_level = ci_co2_kg.confidence_level
 
 @dataclass
 class TransportModeSummary:

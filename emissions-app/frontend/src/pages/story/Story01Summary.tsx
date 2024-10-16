@@ -24,6 +24,7 @@ interface RecordData {
   total_estimate_distance_km_margin_of_error: number;
   total_estimate_distance_km_lower_bound: number;
   total_estimate_distance_km_upper_bound: number;
+  confidence_level: number;
 
   // totals for all records
   total_recorded_co2_kg: number;
@@ -89,13 +90,13 @@ function Story01Summary() {
           <div className="text-left">
             <p>co<sub>2</sub> emissions</p>
             <p className="text-4xl font-extrabold mb-2">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
-            <p className="text-xs">90% CI, {Math.round(documents?.weekly.total_estimate_co2_kg_lower_bound ?? 0).toLocaleString()} - {Math.round(documents?.weekly.total_estimate_co2_kg_upper_bound ?? 0).toLocaleString()}</p>
+            <p className="text-xs"><a className="underline" href="https://www.nngroup.com/articles/confidence-interval/">{documents?.weekly.confidence_level ?? 0}% CI</a>, {Math.round(documents?.weekly.total_estimate_co2_kg_lower_bound ?? 0).toLocaleString()} - {Math.round(documents?.weekly.total_estimate_co2_kg_upper_bound ?? 0).toLocaleString()}</p>
           </div>
 
           <div className="text-right">
             <p>distance travelled</p>
             <p className="text-4xl font-extrabold mb-2">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
-            <p className="text-xs">90% CI, {Math.round(documents?.weekly.total_estimate_distance_km_lower_bound ?? 0).toLocaleString()} - {Math.round(documents?.weekly.total_estimate_distance_km_upper_bound ?? 0).toLocaleString()}</p>
+            <p className="text-xs">{documents?.weekly.confidence_level ?? 0}% CI, {Math.round(documents?.weekly.total_estimate_distance_km_lower_bound ?? 0).toLocaleString()} - {Math.round(documents?.weekly.total_estimate_distance_km_upper_bound ?? 0).toLocaleString()}</p>
           </div>
         </div>
       </section>

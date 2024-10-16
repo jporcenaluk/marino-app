@@ -52,16 +52,14 @@ def confidence_interval(data: list[float]) -> ConfidenceInterval:
     However, it can be less accurate with smaller sample sizes.
     """
     # standard error of the mean
-    print("Printing data")
-    print(data)
     sample_size = len(data)
     sample_mean = np.mean(data)
     std_dev = np.std(data, ddof=1)
 
-    # 90% confidence level
-    confidence_level = 0.90
+    # confidence level
+    confidence_level = 0.95
 
-    # Calculate the t-critical value for a 95% confidence interval
+    # Calculate the t-critical value for a confidence interval
     t_critical = stats.t.ppf((1 + confidence_level) / 2, df=sample_size-1)
 
     # Calculate the margin of error
@@ -72,7 +70,7 @@ def confidence_interval(data: list[float]) -> ConfidenceInterval:
     ci_upper_ttest = sample_mean + margin_of_error
 
     return ConfidenceInterval(
-        confidence_level=confidence_level,
+        confidence_level=confidence_level * 100,
         margin_of_error=margin_of_error,
         lower_bound=ci_lower_ttest,
         upper_bound=ci_upper_ttest,
