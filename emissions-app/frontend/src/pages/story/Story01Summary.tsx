@@ -5,14 +5,28 @@ import { useNavigate } from 'react-router-dom';
 import './Story01Summary.css';
 
 interface RecordData {
+  total_recorded_count: number;
+  date?: string; // Optional because it's not in the weekly object
+
+  // averages per record
   avg_co2_kg_per_record: number;
   avg_co2_kg_per_record_per_distance_km: number;
   avg_distance_km_per_record: number;
-  date?: string; // Optional because it's not in the weekly object
+
+  // estimates
   total_estimate_co2_kg: number;
   total_estimate_distance_km: number;
+
+  // confidence intervals
+  total_estimate_co2_kg_margin_of_error: number;
+  total_estimate_co2_kg_lower_bound: number;
+  total_estimate_co2_kg_upper_bound: number;
+  total_estimate_distance_km_margin_of_error: number;
+  total_estimate_distance_km_lower_bound: number;
+  total_estimate_distance_km_upper_bound: number;
+
+  // totals for all records
   total_recorded_co2_kg: number;
-  total_recorded_count: number;
   total_recorded_distance_km: number;
 }
 
@@ -73,19 +87,21 @@ function Story01Summary() {
         <p className="text-xs mb-2">Estimated Commuting Stats For Maths Week</p>
         <div className="flex justify-between">
           <div className="text-left">
-            <p className="text-4xl font-extrabold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
-            <p className="stat-label">co<sub>2</sub> emissions</p>
+            <p>co<sub>2</sub> emissions</p>
+            <p className="text-4xl font-extrabold mb-2">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
+            <p className="text-xs">90% CI, {Math.round(documents?.weekly.total_estimate_co2_kg_lower_bound ?? 0).toLocaleString()} - {Math.round(documents?.weekly.total_estimate_co2_kg_upper_bound ?? 0).toLocaleString()}</p>
           </div>
 
           <div className="text-right">
-            <p className="text-4xl font-extrabold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
-            <p className="stat-label">distance travelled</p>
+            <p>distance travelled</p>
+            <p className="text-4xl font-extrabold mb-2">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
+            <p className="text-xs">90% CI, {Math.round(documents?.weekly.total_estimate_distance_km_lower_bound ?? 0).toLocaleString()} - {Math.round(documents?.weekly.total_estimate_distance_km_upper_bound ?? 0).toLocaleString()}</p>
           </div>
         </div>
       </section>
       <section className="mb-6">
         <h3 className="text-3xl mb-4">Maths is about <span className="font-bold">curiosity</span>.</h3>
-        <p>What do you <span className="font-bold">notice</span>? What do you <span className="font-bold">wonder</span>? Maths is driven by curiosity about the world. When given summary statistics like this, you might have all sorts of questions. For example, which is the most efficient form of transportation?</p>
+        <p>What do you <span className="font-bold">notice</span>? What do you <span className="font-bold">wonder</span>? When given summary statistics like this, you might have all sorts of questions. For example, which is the most efficient form of transportation?</p>
       </section>
       <section className="mb-6">
         <h3 className="text-xl">Or, wait, how much CO2 <span className="font-bold">is</span> a kilogram?</h3>

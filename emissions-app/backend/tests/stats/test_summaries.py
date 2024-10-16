@@ -14,6 +14,7 @@ def daily_individuals():
     daily_individual_1.co2_kg = 1.0
     daily_individual_1.distance_km = 3
     daily_individual_1.transport_mode = "bike"
+    daily_individual_1.transport_mode_friendly = "Bike"
     daily_individual_1.tz_identifier = "America/New_York"
     daily_individual_1.created_utc = dt.datetime(2021, 1, 1, 0, 0, 0)
 
@@ -21,6 +22,7 @@ def daily_individuals():
     daily_individual_2.co2_kg = 1.2
     daily_individual_2.distance_km = 3
     daily_individual_2.transport_mode = "tram_or_bus"
+    daily_individual_1.transport_mode_friendly = "Tram or Bus"
     daily_individual_2.tz_identifier = "America/New_York"
     daily_individual_2.created_utc = dt.datetime(2021, 1, 1, 0, 0, 0)
 

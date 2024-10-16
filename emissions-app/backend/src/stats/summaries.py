@@ -2,7 +2,7 @@ import logging
 import datetime as dt
 from dataclasses import dataclass
 from stats.daily_individual import DailyIndividual
-from stats.base_calcs import total_population, average
+from stats.base_calcs import total_population, average, confidence_interval
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,6 @@ class SummaryBase:
     # estimated totals (Marino-specific)
     total_estimate_co2_kg: float
     total_estimate_distance_km: float
-
 
     def __init__(self, daily_individuals: list[DailyIndividual]):
         self.total_recorded_count = len(daily_individuals)
@@ -76,7 +75,6 @@ class DailySummaries:
     daily_summaries: list[DailySummary]
 
     def __init__(self, daily_individuals: list[DailyIndividual]):
-        logger.info(f"Daily individuals: {daily_individuals}")
         grouped_by_day = {}
         
         for individual in daily_individuals:
@@ -96,6 +94,12 @@ class WeeklySummary(SummaryBase):
     """
     The weekly stats
     """
+    total_estimate_co2_kg_lower_bound: float
+    total_estimate_co2_kg_upper_bound: float
+    total_estimate_co2_kg_margin_of_error: float
+    total_estimate_distance_km_lower_bound: float
+    total_estimate_distance_km_upper_bound: float
+    total_estimate_distance_km_margin_of_error: float
 
     def __init__(self, daily_individuals: list[DailyIndividual]):
         super().__init__(daily_individuals)
@@ -104,6 +108,15 @@ class WeeklySummary(SummaryBase):
         min_date = min(emissions.created_utc for emissions in daily_individuals)
         if (max_date - min_date).days > 7:
             raise LongerThanWeekException
+        
+        ci_co2_kg = confidence_interval([emissions.co2_kg for emissions in daily_individuals])
+        self.total_estimate_co2_kg_lower_bound = ci_co2_kg.lower_bound_population
+        self.total_estimate_co2_kg_upper_bound = ci_co2_kg.upper_bound_population
+        self.total_estimate_co2_kg_margin_of_error = ci_co2_kg.margin_of_error_population
+        ci_distance_km = confidence_interval([emissions.distance_km for emissions in daily_individuals])
+        self.total_estimate_distance_km_lower_bound = ci_distance_km.lower_bound_population
+        self.total_estimate_distance_km_upper_bound = ci_distance_km.upper_bound_population
+        self.total_estimate_distance_km_margin_of_error = ci_distance_km.margin_of_error_population
 
 @dataclass
 class TransportModeSummary:
