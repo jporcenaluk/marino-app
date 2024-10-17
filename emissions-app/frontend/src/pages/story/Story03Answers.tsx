@@ -33,18 +33,17 @@ function Story03Answers() {
         <div className="p-4 max-w-md mx-auto">
             <section className="mb-8">
                 <h2 className="text-md text-3xl mb-4">Maths isn't just about the <span className="font-black">right</span> answers.</h2>
-                <p className="mb-4">There is not always a straightforward answer to difficult questions in the real world.</p>
-                <p>Here are some of the assumptions built-in to all of the previous charts and statistics.</p>
+                <p className="mb-4">There is not always a straightforward answer to difficult questions in the real world. Here are some of the <span className="font-bold">assumptions</span> built-in to all of the previous charts and statistics.</p>
             </section>
             <section className="grid grid-cols-3 gap-4">
                 <div className="col-span-1 p-4">
                     <img src={people} alt="How accurate is the estimation of the number of people who commute?" className="w-24 sm:w-32 md:w-48" />
                 </div>
                 <div className="col-span-2 p-4 flex items-center justify-center">
-                    It's assumed there are 1400 students and 100 staff at Marino, and 75% of them travel to school daily.
+                    There are 1400 students and 100 staff at Marino, and 75% of them travel to school daily.
                 </div>
                 <div className="col-span-2 p-4">
-                    It's assumed those surveyed accurately represent all Marino students and staff.
+                    Those surveyed accurately represent all Marino students and staff.
                 </div>
                 <div className="col-span-1 p-4 flex items-center justify-center">
                     <img src={surveyTrueFalse} alt="Are surveys accurate?" className="w-24 sm:w-32 md:w-48" />
@@ -53,7 +52,7 @@ function Story03Answers() {
                     <img src={ukIrelandTranslate} alt="Does data from London translate to Dublin?" className="w-24 sm:w-32 md:w-48" />
                 </div>
                 <div className="col-span-2 p-4 flex items-center justify-center">
-                    The CO<sub>2</sub> emissions report the calculations are based on used data gathered from London.
+                    The CO2 emissions report the calculations are based on used data gathered from London, and the results translate to Dublin.
                 </div>
             </section>
             <div className="flex justify-between">
