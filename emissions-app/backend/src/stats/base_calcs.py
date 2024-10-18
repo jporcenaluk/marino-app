@@ -30,7 +30,7 @@ def total_population() -> int:
     Estimated 1400 students, 100 staff, approximately 75% of which commute to school
     each day.
 
-    (1400 + 100) * 0.75 = 1125
+    (1680 + 100) * 0.75 = 1125
     """
     return 1125
 

@@ -40,7 +40,7 @@ function Story03Answers() {
                     <img src={people} alt="How accurate is the estimation of the number of people who commute?" className="w-24 sm:w-32 md:w-48" />
                 </div>
                 <div className="col-span-2 p-4 flex items-center justify-center">
-                    There are 1400 students and 100 staff at Marino, and 75% of them travel to school daily.
+                    There are 1680 students and 100 staff at Marino, and 75% of them travel to school daily.
                 </div>
                 <div className="col-span-2 p-4">
                     Those surveyed accurately represent all Marino students and staff.
