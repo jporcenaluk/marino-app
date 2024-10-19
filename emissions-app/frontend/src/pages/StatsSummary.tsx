@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import SummaryStats from '../../components/SummaryStats';
 import qrCode from '../assets/qr-code.svg';
 
 interface RecordData {
@@ -71,10 +72,6 @@ function StatsSummary() {
     return () => clearInterval(countdownInterval);
   }, [showModal]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="p-4 mx-auto h-full">
       {showModal && (
@@ -91,15 +88,7 @@ function StatsSummary() {
           <h1 className="text-4xl font-extrabold">Marino Students & Staff</h1>
           <p className="text-lg mb-2">Estimated Commuting Stats For Maths Week</p>
           <div className="flex h-full mt-10 mb-10">
-            <div className="text-left flex-grow p-5">
-              <p className="text-6xl font-extrabold">{Math.round(documents?.weekly.total_estimate_co2_kg ?? 0).toLocaleString()} kg</p>
-              <p className="stat-label">co<sub>2</sub> emissions</p>
-            </div>
-
-            <div className="text-right flex-grow p-5">
-              <p className="text-6xl font-extrabold">{Math.round(documents?.weekly.total_estimate_distance_km ?? 0).toLocaleString()} km</p>
-              <p className="stat-label">distance travelled</p>
-            </div>
+            <SummaryStats />
           </div>
           <div className="flex max-w-3xl w-full text-left text-lg border-b-2">
             Recorded Stats
